@@ -1,4 +1,4 @@
-#include "GraphicManager.h"
+ï»¿#include "GraphicManager.h"
 
 void GraphicManager::DrawBlock(Block* block, const Vector2I& chunkPosition)
 {
@@ -23,7 +23,7 @@ void GraphicManager::DrawChunk(Chunk* chunk)
     for (pair<const Vector3I,Block*>& block : *blocks)
     {
         if (block.second != nullptr)
-            this->DrawBlock(block.second,Vector2I(chunk->getPosition().getX()*chunk->getSizeX(), chunk->getPosition().getZ() * chunk->getSizeY()));
+            this->DrawBlock(block.second,Vector2I(chunk->getPosition().getX()*chunk->getSizeX(), chunk->getPosition().getZ() * chunk->getSizeZ()));
     }
 }
 
@@ -63,13 +63,13 @@ void GraphicManager::Load(GLFWwindow* window, unsigned int SCR_WIDTH, unsigned i
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
-    float vertices[] = { //position vis à vis du spawn
-        -0.5f, -0.5f, -0.5f,  1.0f, 1.0f, //face arrière
+    float vertices[] = { //position vis Ã  vis du spawn
+        -0.5f, -0.5f, -0.5f,  1.0f, 1.0f, //face arriere
+         0.5f,  0.5f, -0.5f,  0.0f, 0.0f,
          0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
          0.5f,  0.5f, -0.5f,  0.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 0.0f,
         -0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f, 0.0f,
 
         -0.5f, -0.5f,  0.5f,  0.0f, 1.0f, //face avant
          0.5f, -0.5f,  0.5f,  1.0f, 1.0f,
@@ -86,11 +86,11 @@ void GraphicManager::Load(GLFWwindow* window, unsigned int SCR_WIDTH, unsigned i
         -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
          0.5f,  0.5f,  0.5f,  0.0f, 0.0f, //face droite
+         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
          0.5f,  0.5f, -0.5f,  1.0f, 0.0f,
          0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, 1.0f,
          0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, 1.0f,
 
         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, //face dessous
          0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
@@ -98,13 +98,13 @@ void GraphicManager::Load(GLFWwindow* window, unsigned int SCR_WIDTH, unsigned i
          0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 0.0f, //face dessus
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 0.0f
+        
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, //face dessus
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f  
     };
 
     glGenVertexArrays(1, &VAO);
@@ -123,6 +123,8 @@ void GraphicManager::Load(GLFWwindow* window, unsigned int SCR_WIDTH, unsigned i
     glEnableVertexAttribArray(1);
 
     textureManager.Load(ourShader);
+
+    glEnable(GL_CULL_FACE);
 }
 
 void GraphicManager::Draw(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT,float fov, glm::vec3 cameraPos, glm::vec3 cameraFront, glm::vec3 cameraUp, GLFWwindow* window, ChunkManager& chunkManager)

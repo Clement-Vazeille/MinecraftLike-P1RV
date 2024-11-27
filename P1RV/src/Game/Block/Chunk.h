@@ -8,17 +8,20 @@ class Chunk
 {
 protected:
 	unordered_map<Vector3I, Block*, Vector3I::HashFoncteur> blocks; //hashmap qui contient les différents blocs du chunk
-	Vector2I xyPosition;
+	Vector2I xzPosition;
 
 	int sizeX;
 	int sizeY;
 	int sizeZ;
 public:
 	Chunk();
-	Chunk(int xPosition, int yPosition);
+	Chunk(int xPosition, int zPosition);
+	Chunk(const Vector2I& v);
 
 	void AddBlock(Block* b);//ajoute un block dans un chunk à la position correspondante
 	void FillBottomWithSnow(void);
+	void FillBottomWithGrass(void);
+
 
 	unordered_map<Vector3I, Block*, Vector3I::HashFoncteur>* GetBlocks(void);
 	//si le bloc existe déjà il est replacé est détruit
@@ -26,5 +29,6 @@ public:
 	Vector2I getPosition();
 	int getSizeX();
 	int getSizeY();
+	int getSizeZ();
 };
 

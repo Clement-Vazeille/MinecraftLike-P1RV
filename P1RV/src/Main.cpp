@@ -19,9 +19,11 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // camera
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraPos = glm::vec3(8.0f, 2.0f, 8.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+bool vol;
 
 bool firstMouse = true;
 float yaw = -90.0f;	// yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right so we initially rotate a bit to the left.
@@ -84,31 +86,9 @@ int main()
     BirchWood arbre4(0, 4, 0);
 
     CraftingTable table(3, 1, 0);
-
-    Chunk chunk;
-    chunk.AddBlock(&arbre1);
-    chunk.AddBlock(&arbre2);
-    chunk.AddBlock(&arbre3);
-    chunk.AddBlock(&arbre4);
-
-    chunk.AddBlock(&table);
-
-    chunk.FillBottomWithSnow();
-
-    Chunk chunk2(-1, -1);
-    chunk2.FillBottomWithSnow();
-
-    Chunk chunk3(0, -1);
-    chunk3.FillBottomWithSnow();
-
-    Chunk chunk4(-1, 0);
-    chunk4.FillBottomWithSnow();
  
     ChunkManager chunkManager;
-    chunkManager.AddChunk(&chunk);
-    chunkManager.AddChunk(&chunk2);
-    chunkManager.AddChunk(&chunk3);
-    chunkManager.AddChunk(&chunk4);
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -119,6 +99,8 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
+        // Upadate du monde
+        chunkManager.LoadChunks(cameraPos);
         // input
         // -----
         processInput(window);
@@ -142,6 +124,9 @@ void processInput(GLFWwindow* window)
         glfwSetWindowShouldClose(window, true);
 
     float cameraSpeed = static_cast<float>(10 * deltaTime);
+    if ((glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS))
+        cameraSpeed *= 2.5;
+
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         cameraPos += cameraSpeed * cameraFront;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -150,6 +135,11 @@ void processInput(GLFWwindow* window)
         cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        cameraPos += glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)) * cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        cameraPos += glm::normalize(glm::vec3(0.0f, -1.0f, 0.0f)) * cameraSpeed;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
