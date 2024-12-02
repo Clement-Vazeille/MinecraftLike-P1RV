@@ -20,6 +20,12 @@ void MaFenetre::scroll_callback(GLFWwindow* window, double xoffset, double yoffs
 
 MaFenetre::MaFenetre()
 {
+    glfwInit();
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     mWindow = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "MineCraft-Like", NULL, NULL);
     glfwSetWindowUserPointer(mWindow, this);
 
@@ -42,8 +48,7 @@ MaFenetre::~MaFenetre()
 
 void MaFenetre::framebuffer_size_callback(int width, int height)
 {
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
+    //On s'assure que le viewport corresponde aux dimensions de la fenêtre
     glViewport(0, 0, width, height);
 }
 
@@ -60,18 +65,18 @@ void MaFenetre::mouse_callback(double xposIn, double yposIn)
     }
 
     float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+    float yoffset = lastY - ypos; // inversé car les coordonnées y vont de bas en haut
     lastX = xpos;
     lastY = ypos;
 
-    float sensitivity = 0.1f; // change this value to your liking
+    float sensitivity = 0.1f; // sensibilité du déplacement
     xoffset *= sensitivity;
     yoffset *= sensitivity;
 
     yaw += xoffset;
     pitch += yoffset;
 
-    // make sure that when pitch is out of bounds, screen doesn't get flipped
+    // on s'assure que le pitch ne dépasse pas la limite possible
     if (pitch > 89.0f)
         pitch = 89.0f;
     if (pitch < -89.0f)
@@ -95,13 +100,16 @@ void MaFenetre::scroll_callback(double xoffset, double yoffset)
 
 void MaFenetre::processInput()
 {
+    //traitement sortie de l'application
     if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(mWindow, true);
 
+    //Traitement sprint ou marche
     float cameraSpeed = static_cast<float>(10 * deltaTime);
     if ((glfwGetKey(mWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS))
         cameraSpeed *= 2.5;
 
+    //Traitement déplacements
     if (glfwGetKey(mWindow, GLFW_KEY_W) == GLFW_PRESS)
         cameraPos += cameraSpeed * cameraFront;
     if (glfwGetKey(mWindow, GLFW_KEY_S) == GLFW_PRESS)
@@ -110,7 +118,6 @@ void MaFenetre::processInput()
         cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     if (glfwGetKey(mWindow, GLFW_KEY_D) == GLFW_PRESS)
         cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-
     if (glfwGetKey(mWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
         cameraPos += glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)) * cameraSpeed;
     if (glfwGetKey(mWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)

@@ -2,13 +2,12 @@
 
 void GraphicManager::DrawBlock(Block* block, const Vector2I& chunkPosition)
 {
-    // calculate the model matrix for each object and pass it to shader before drawing
-    glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+    //Calcul de la matrice model pour l'objet actuel qui est ensuite envoyé au shader
+    glm::mat4 model = glm::mat4(1.0f); 
     model = glm::translate(model, glm::vec3(block->getPosition().getX() + chunkPosition.getX(), block->getPosition().getY(), block->getPosition().getZ() + chunkPosition.getZ()));
     ourShader.setMat4("model", model);
 
-    // bind textures on corresponding texture units
-
+    //On assigne à chaque face sa texture correspondante
     for (int j = 0; j < 6; j++)
     {
         textureManager.BindTexture(block->getTexturei(j));
@@ -51,17 +50,11 @@ GraphicManager::~GraphicManager()
 
 void GraphicManager::Load(MaFenetre* fenetre)
 {
-    
-
-    // configure global opengl state
+    // configuration globale des états d'openGL
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
 
-    // build and compile our shader zprogram
-    // ------------------------------------
-    ///Shader ourShader("src/Shader/shader.vs", "src/Shader/shader.fs");
-
-    // set up vertex data (and buffer(s)) and configure vertex attributes
+    // initialisation des sommets d'un cube
     // ------------------------------------------------------------------
     float vertices[] = { //position vis à vis du spawn
         -0.5f, -0.5f, -0.5f,  1.0f, 1.0f, //face arriere
@@ -129,29 +122,29 @@ void GraphicManager::Load(MaFenetre* fenetre)
 
 void GraphicManager::Draw(MaFenetre* fenetre, ChunkManager& chunkManager)
 {
-    // render
-        // ------
+    //clear du rendu précédent
     glClearColor(135.f / 255.f, 206.f / 255.f, 235.f / 255.f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-    // activate shader
+    //activation des shaders
     ourShader.use();
 
-    // pass projection matrix to shader (note that in this case it could change every frame)
+    //Transmission de la matrice de projection du monde aux shaders
     glm::mat4 projection = glm::perspective(glm::radians(fenetre->getfov()), (float)fenetre->getSCR_WIDTH() / (float)fenetre->getSCR_HEIGHT(), 0.1f, 100.0f);
     ourShader.setMat4("projection", projection);
 
-    // camera/view transformation
+    //Transmission de la matrice de vue de la caméra aux shaders
     glm::mat4 view = glm::lookAt(fenetre->getcameraPos(), fenetre->getcameraPos() + fenetre->getcameraFront(), fenetre->getcameraUp());
     ourShader.setMat4("view", view);
 
-    // render boxes
+    //On assigne le VAO des cubes
     glBindVertexArray(VAO);
    
+    //On dessine le monde
     this->DrawChunkManager(chunkManager);
-    // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-    // -------------------------------------------------------------------------------
+
+    //On swap les buffers glfw et on poll les events d'input output
     glfwSwapBuffers(fenetre->getWindow());
     glfwPollEvents();
 }

@@ -3,18 +3,17 @@
 void TextureManager::LoadTexture(string fileName, Shader shader)
 {
     unsigned int currentTex;
-    // ---------
+    //On récupère l'id de la texture
     glGenTextures(1, &currentTex);
     glBindTexture(GL_TEXTURE_2D, currentTex);
-    // set the texture wrapping parameters
+    //Paramétrage du wrapper de textures
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
+    //Paramétrage du filtrage de la texture
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    // load image, create texture and generate mipmaps
+
     int width, height, nrChannels;
-    //stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
     unsigned char* data = stbi_load(fileName.c_str(), &width, &height, &nrChannels, 0);
     if (data)
     {
@@ -27,8 +26,8 @@ void TextureManager::LoadTexture(string fileName, Shader shader)
         cout << "Error Reason : " << stbi_failure_reason() << endl;
     }
     stbi_image_free(data);
-    // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
-    // -------------------------------------------------------------------------------------------
+    
+    //On enregistre l'ID de la texture dans nos shaders et on l'associe à la texture correspondante
     shader.use();
     shader.setInt(fileName, currentTex);
 

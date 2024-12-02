@@ -1,4 +1,4 @@
-#include "Include.h"
+#include "IncludeLibrairies.h"
 
 #include "Graphic/GraphicManager.h"
 #include "Game/Block/Block.h"
@@ -13,65 +13,46 @@
 
 int main()
 {
-    glfwInit();
-    // glfw: initialize and configure
-    // ------------------------------
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    // glfw window creation
-    // --------------------
+    // Création de notre fenêtre et initialisation de GLFW
     MaFenetre* maFenetre = new MaFenetre();
     
-    // glad: load all OpenGL function pointers
-    // ---------------------------------------
+    // Chargement de GLAD: ça charge les OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
     
+    // Chargement du Graphic Manager
     GraphicManager graphicManager;
     graphicManager.Load(maFenetre);
 
-    // tell GLFW to capture our mouse
+    // On demande à GLFW de capturer notre souris
     glfwSetInputMode(maFenetre->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-    
-    BirchWood arbre1(0, 1, 0);
-    BirchWood arbre2(0, 2, 0);
-    BirchWood arbre3(0, 3, 0);
-    BirchWood arbre4(0, 4, 0);
-
-    CraftingTable table(3, 1, 0);
  
     ChunkManager chunkManager;
 
-    // render loop
-    // -----------
+    // Boucle de rendu infinie
     while (!glfwWindowShouldClose(maFenetre->getWindow()))
     {
-        // per-frame time logic
-        // --------------------
+        // Calcul de l'écart de temps entre la frame actuelle et la frame précédente
         float currentFrame = static_cast<float>(glfwGetTime());
         maFenetre->setDeltaTime(currentFrame - maFenetre->getLastFrame());
         maFenetre->setLastFrame(currentFrame);
 
         // Upadate du monde
         chunkManager.LoadChunks(maFenetre->getcameraPos());
-        // input
-        // -----
+
+        // Traitement des input
         maFenetre->processInput();
 
-        //render
+        // Render
         graphicManager.Draw(maFenetre,chunkManager);
     }
 
     
-    // glfw: terminate, clearing all previously allocated GLFW resources.
-    // ------------------------------------------------------------------
+    //libère l'entièreté des ressources GLFW allouées
     glfwTerminate();
     return 0;
 }
