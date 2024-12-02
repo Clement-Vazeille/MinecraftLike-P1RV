@@ -1,6 +1,7 @@
 #pragma once
 #include <unordered_map>
 
+//Classe représentant des Vecteurs d'entiers à 2 dimensions
 class Vector2I
 {
 private:

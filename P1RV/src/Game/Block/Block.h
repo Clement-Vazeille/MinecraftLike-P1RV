@@ -5,6 +5,8 @@
 #include "../Maths/Vector3I.h"
 using namespace std;
 
+//Classe représentant un block indivuduel, il contient ses textures et sa position, en général on utilise des classes qui héritent de block et qui ont des textures déjà définies lors de l'initialisation
+//Ces classes filles sont définies dans le Dossier SpecificBlocks
 class Block
 {
 protected:

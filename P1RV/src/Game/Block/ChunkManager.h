@@ -2,9 +2,12 @@
 #include "Chunk.h"
 #include <unordered_map>
 #include "../Maths/Vector2I.h"
+
+//Class stockant l'ensemble des chunks du jeu
 class ChunkManager
 {
 private:
+	//On stock les chunks dans une unordered map car ça nous garantit un accès et un ajout rapide des chunks et qu'avec un tableau si la carte n'est pas un carré on aurait bcp de trous dans le tableau
 	unordered_map<Vector2I, Chunk*, Vector2I::HashFoncteur> chunks;
 public:
 	void AddChunk(Chunk* chunk);

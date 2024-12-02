@@ -33,7 +33,6 @@ void Chunk::AddBlock(Block* b)
 		cout << "Le jeu a essayé d'ajouter un bloc à un chunk en dehors de ce chunk" << endl;
 		return;
 	}
-	//delete blocks.at(blockPosition);
 	blocks.insert(make_pair(blockPosition,b));
 }
 

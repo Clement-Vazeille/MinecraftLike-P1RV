@@ -24,8 +24,6 @@ void ChunkManager::LoadChunks(const glm::vec3& coordonneesJoueur)
 	//chunkjoueur += Vector2I(0,0);
 
 	this->GenerateChunk(chunkjoueur);
-	//cout << "chunk   " << chunkjoueur.getX() << "; " << chunkjoueur.getZ() << endl;
-	//cout << "joueur   " << coordonneesJoueur.x << ";" << coordonneesJoueur.z << endl;
 
 	this->GenerateChunk(chunkjoueur + Vector2I(1, 1));
 	this->GenerateChunk(chunkjoueur + Vector2I(0, 1));
