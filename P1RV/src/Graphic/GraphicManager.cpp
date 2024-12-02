@@ -49,7 +49,7 @@ GraphicManager::~GraphicManager()
     glDeleteBuffers(1, &VBO);
 }
 
-void GraphicManager::Load(GLFWwindow* window, unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT)
+void GraphicManager::Load(MaFenetre* fenetre)
 {
     
 
@@ -127,7 +127,7 @@ void GraphicManager::Load(GLFWwindow* window, unsigned int SCR_WIDTH, unsigned i
     glEnable(GL_CULL_FACE);
 }
 
-void GraphicManager::Draw(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT,float fov, glm::vec3 cameraPos, glm::vec3 cameraFront, glm::vec3 cameraUp, GLFWwindow* window, ChunkManager& chunkManager)
+void GraphicManager::Draw(MaFenetre* fenetre, ChunkManager& chunkManager)
 {
     // render
         // ------
@@ -139,11 +139,11 @@ void GraphicManager::Draw(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT,float 
     ourShader.use();
 
     // pass projection matrix to shader (note that in this case it could change every frame)
-    glm::mat4 projection = glm::perspective(glm::radians(fov), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+    glm::mat4 projection = glm::perspective(glm::radians(fenetre->getfov()), (float)fenetre->getSCR_WIDTH() / (float)fenetre->getSCR_HEIGHT(), 0.1f, 100.0f);
     ourShader.setMat4("projection", projection);
 
     // camera/view transformation
-    glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    glm::mat4 view = glm::lookAt(fenetre->getcameraPos(), fenetre->getcameraPos() + fenetre->getcameraFront(), fenetre->getcameraUp());
     ourShader.setMat4("view", view);
 
     // render boxes
@@ -152,6 +152,6 @@ void GraphicManager::Draw(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT,float 
     this->DrawChunkManager(chunkManager);
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------
-    glfwSwapBuffers(window);
+    glfwSwapBuffers(fenetre->getWindow());
     glfwPollEvents();
 }

@@ -5,6 +5,7 @@
 
 #include "../Game/Block/Chunk.h"
 #include "../Game/Block/ChunkManager.h"
+#include "MaFenetre.h"
 
 class GraphicManager
 {
@@ -20,7 +21,7 @@ public:
 	GraphicManager();
 	~GraphicManager();
 
-	void Load(GLFWwindow* window, unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT);
-	void Draw(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT, float fov, glm::vec3 cameraPos, glm::vec3 cameraFront, glm::vec3 cameraUp, GLFWwindow* window,ChunkManager& chunkManager);
+	void Load(MaFenetre* fenetre);
+	void Draw(MaFenetre*,ChunkManager& chunkManager);
 };
 
