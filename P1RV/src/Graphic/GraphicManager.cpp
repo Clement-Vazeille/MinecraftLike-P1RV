@@ -26,9 +26,9 @@ void GraphicManager::DrawChunk(Chunk* chunk)
     }
 }
 
-void GraphicManager::DrawChunkManager(ChunkManager& chunkManager)
+void GraphicManager::DrawChunkManager(ChunkManager* chunkManager)
 {
-    unordered_map<Vector2I, Chunk*, Vector2I::HashFoncteur>* chunks = chunkManager.GetActiveChunks();
+    unordered_map<Vector2I, Chunk*, Vector2I::HashFoncteur>* chunks = chunkManager->GetActiveChunks();
 
     for (pair<const Vector2I,Chunk*>& chunk : *chunks)
     {
@@ -120,7 +120,7 @@ void GraphicManager::Load(MaFenetre* fenetre)
     glEnable(GL_CULL_FACE);
 }
 
-void GraphicManager::Draw(MaFenetre* fenetre, ChunkManager& chunkManager)
+void GraphicManager::Draw(MaFenetre* fenetre)
 {
     //clear du rendu précédent
     glClearColor(135.f / 255.f, 206.f / 255.f, 235.f / 255.f, 1.0f);
@@ -142,7 +142,7 @@ void GraphicManager::Draw(MaFenetre* fenetre, ChunkManager& chunkManager)
     glBindVertexArray(VAO);
    
     //On dessine le monde
-    this->DrawChunkManager(chunkManager);
+    this->DrawChunkManager(fenetre->getChunkManager());
 
     //On swap les buffers glfw et on poll les events d'input output
     glfwSwapBuffers(fenetre->getWindow());

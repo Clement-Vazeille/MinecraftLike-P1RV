@@ -47,3 +47,24 @@ void ChunkManager::GenerateChunk(const Vector2I& coordonneesChunk)
 		this->AddChunk(chunk);
 	}
 }
+
+bool ChunkManager::isPositionAllowed(const glm::vec3& coordonneesJoueur)
+{
+	Vector2I chunkjoueur(coordonneesJoueur.x / 16, coordonneesJoueur.z / 16);
+	if (coordonneesJoueur.x < 0)
+		chunkjoueur += Vector2I(-1, 0);
+	if (coordonneesJoueur.z < 0)
+		chunkjoueur += Vector2I(0, -1);
+
+	Vector3I blockjoueur(static_cast<int>(coordonneesJoueur.x) % 16, static_cast<int>(coordonneesJoueur.y), static_cast<int>(coordonneesJoueur.z) % 16);
+
+	if (chunks.count(chunkjoueur))
+	{
+		//cout << blockjoueur.getX() <<" " << blockjoueur.getY() << " " << blockjoueur.getZ() << " Test :" << chunks[chunkjoueur]->GetBlocks()->count(blockjoueur) << endl;
+
+		//marche pas du tout pour les coordonnées négatives
+		if (chunks[chunkjoueur]->GetBlocks()->count(blockjoueur))
+			return false;
+	}
+	return true;
+}

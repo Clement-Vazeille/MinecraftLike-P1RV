@@ -22,7 +22,7 @@ private:
 	//Fonctions utilitaires qui permettent de dessiner nos éléments
 	void DrawBlock(Block* block, const Vector2I& chunkPosition);
 	void DrawChunk(Chunk* chunk);
-	void DrawChunkManager(ChunkManager& chunkManager);
+	void DrawChunkManager(ChunkManager* chunkManager);
 public:
 	GraphicManager();
 	~GraphicManager();
@@ -30,6 +30,6 @@ public:
 	//Charge les données géométriques d'un cube (VAO/VBO)
 	void Load(MaFenetre* fenetre);
 	//Dessine l'ensemble des blocks contenus dans le chunkManager dans la fenetre
-	void Draw(MaFenetre* fenetre,ChunkManager& chunkManager);
+	void Draw(MaFenetre* fenetre);
 };
 

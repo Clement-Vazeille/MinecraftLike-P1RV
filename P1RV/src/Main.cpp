@@ -30,8 +30,6 @@ int main()
 
     // On demande à GLFW de capturer notre souris
     glfwSetInputMode(maFenetre->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
- 
-    ChunkManager chunkManager;
 
     // Boucle de rendu infinie
     while (!glfwWindowShouldClose(maFenetre->getWindow()))
@@ -42,13 +40,13 @@ int main()
         maFenetre->setLastFrame(currentFrame);
 
         // Upadate du monde
-        chunkManager.LoadChunks(maFenetre->getcameraPos());
+        maFenetre->upadateChunks();
 
         // Traitement des input
         maFenetre->processInput();
 
         // Render
-        graphicManager.Draw(maFenetre,chunkManager);
+        graphicManager.Draw(maFenetre);
     }
 
     

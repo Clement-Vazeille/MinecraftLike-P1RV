@@ -39,10 +39,13 @@ MaFenetre::MaFenetre()
     glfwSetFramebufferSizeCallback(mWindow, framebuffer_size_callback);
     glfwSetCursorPosCallback(mWindow, mouse_callback);
     glfwSetScrollCallback(mWindow, scroll_callback);
+
+    chunkManager = new ChunkManager();
 }
 
 MaFenetre::~MaFenetre()
 {
+    //delete chunkManager;
     glfwDestroyWindow(mWindow);
 }
 
@@ -108,20 +111,30 @@ void MaFenetre::processInput()
     float cameraSpeed = static_cast<float>(10 * deltaTime);
     if ((glfwGetKey(mWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS))
         cameraSpeed *= 2.5;
+    
+    glm::vec3 movement = glm::vec3(0,0,0);
 
     //Traitement déplacements
     if (glfwGetKey(mWindow, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
+        movement += cameraSpeed * cameraFront;
     if (glfwGetKey(mWindow, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
+        movement -= cameraSpeed * cameraFront;
     if (glfwGetKey(mWindow, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        movement -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     if (glfwGetKey(mWindow, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        movement += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     if (glfwGetKey(mWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)) * cameraSpeed;
+        movement += glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)) * cameraSpeed;
     if (glfwGetKey(mWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::vec3(0.0f, -1.0f, 0.0f)) * cameraSpeed;
+        movement += glm::normalize(glm::vec3(0.0f, -1.0f, 0.0f)) * cameraSpeed;
+
+    if(chunkManager->isPositionAllowed(cameraPos+movement))
+        cameraPos += movement;
+}
+
+void MaFenetre::upadateChunks()
+{
+    chunkManager->LoadChunks(cameraPos);
 }
 
 void MaFenetre::setDeltaTime(float delta)
@@ -172,4 +185,9 @@ unsigned int MaFenetre::getSCR_WIDTH(void) const
 unsigned int MaFenetre::getSCR_HEIGHT(void) const
 {
     return SCR_HEIGHT;
+}
+
+ChunkManager* MaFenetre::getChunkManager(void)
+{
+    return chunkManager;
 }

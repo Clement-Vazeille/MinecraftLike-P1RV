@@ -1,6 +1,6 @@
 #pragma once
 #include "../IncludeLibrairies.h"
-
+#include "../Game/Block/ChunkManager.h"
 //Class qui contient la fenêtre de l'application ainsi que l'ensemble des variables décrivants les états généraux de l'application
 //Elle contient aussi les fonctions de callback de l'application
 
@@ -30,6 +30,8 @@ private:
     float deltaTime = 0.0f;	// temps écoulé entre la dernière frame et la frame actuelle
     float lastFrame = 0.0f; //timestamp de la dernière frame
 
+    ChunkManager* chunkManager;
+
     //Fonctions de callback statics données à OpenGL, leur rôle est d'appeler les fonctions de callback de la classe définies plus bas 
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
     static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -47,6 +49,9 @@ public:
     //Process des inputs
     void processInput();
 
+    //Process chunks
+    void upadateChunks();
+
     //setters
     void setDeltaTime(float delta);
     void setLastFrame(float lf);
@@ -60,6 +65,7 @@ public:
     float getfov(void) const;
     unsigned int getSCR_WIDTH(void) const;
     unsigned int getSCR_HEIGHT(void) const;
+    ChunkManager* getChunkManager(void);
 
 };
 

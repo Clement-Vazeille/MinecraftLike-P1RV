@@ -69,5 +69,5 @@ Vector3I Vector3I::operator*(const int& coeff) const
 
 bool Vector3I::operator==(const Vector3I& param) const
 {
-    return false;
+    return (x == param.getX() && z == param.getZ() && y==param.getY());
 }
