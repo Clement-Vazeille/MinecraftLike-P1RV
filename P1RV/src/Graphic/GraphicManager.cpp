@@ -28,12 +28,13 @@ void GraphicManager::DrawChunk(Chunk* chunk)
 
 void GraphicManager::DrawChunkManager(ChunkManager* chunkManager)
 {
-    unordered_map<Vector2I, Chunk*, Vector2I::HashFoncteur>* chunks = chunkManager->GetActiveChunks();
+    //unordered_map<Vector2I, Chunk*, Vector2I::HashFoncteur>* chunks = chunkManager->GetActiveChunks();
+    unordered_set<Chunk*>* chunks = chunkManager->GetActiveChunks();
 
-    for (pair<const Vector2I,Chunk*>& chunk : *chunks)
+    for (Chunk* chunk : *chunks)
     {
-        if (chunk.second != nullptr)
-            this->DrawChunk(chunk.second);
+        if (chunk != nullptr)
+            this->DrawChunk(chunk);
     }
 }
 

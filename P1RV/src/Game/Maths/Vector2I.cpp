@@ -9,6 +9,17 @@ Vector2I::Vector2I(int xPosition, int zPosition) :
 {
 }
 
+Vector2I::Vector2I(const glm::vec3& coordonneesJoueur)
+{
+	x = coordonneesJoueur.x / 16 ;
+	z = coordonneesJoueur.z / 16;
+
+	if (coordonneesJoueur.x < 0)
+		x += -1;
+	if (coordonneesJoueur.z < 0)
+		z += -1;
+}
+
 void Vector2I::setX(int xi)
 {
 	x = xi;

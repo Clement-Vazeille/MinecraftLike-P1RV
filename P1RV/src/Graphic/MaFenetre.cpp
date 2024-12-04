@@ -135,6 +135,7 @@ void MaFenetre::processInput()
 void MaFenetre::upadateChunks()
 {
     chunkManager->LoadChunks(cameraPos);
+    chunkManager->UnloadChunks(cameraPos);
 }
 
 void MaFenetre::setDeltaTime(float delta)

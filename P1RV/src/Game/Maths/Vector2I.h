@@ -1,5 +1,6 @@
 #pragma once
 #include <unordered_map>
+#include "../../IncludeLibrairies.h"
 
 //Classe représentant des Vecteurs d'entiers à 2 dimensions
 class Vector2I
@@ -10,6 +11,9 @@ private:
 public:
 	Vector2I();
 	Vector2I(int x, int z);
+	
+	//conversion d'une coordonne 3d dans l'appli en une coordonnée de chunk
+	Vector2I(const glm::vec3& coordonneesJoueur);
 
 	void setX(int x);
 	void setZ(int z);

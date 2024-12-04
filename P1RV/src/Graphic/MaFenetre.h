@@ -49,7 +49,7 @@ public:
     //Process des inputs
     void processInput();
 
-    //Process chunks
+    //Charge et génère les chunks proches, puis décharge les chunks éloignés
     void upadateChunks();
 
     //setters
