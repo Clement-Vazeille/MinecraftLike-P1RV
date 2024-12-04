@@ -34,6 +34,7 @@ void ChunkManager::LoadChunks(const glm::vec3& coordonneesJoueur)
 
 	int distanceChargement = 2;
 	
+	//On se déplace sur l'ensemble des blocs qui sont au plus à une distance "distanceChargement" du joueur
 	for(int i = -distanceChargement;i<=distanceChargement;i++)
 	{
 		for (int j = -distanceChargement + abs(i); j <= distanceChargement - abs(i); j++)
@@ -80,13 +81,14 @@ bool ChunkManager::isPositionAllowed(const glm::vec3& coordonneesJoueur)
 	Vector2I chunkjoueur(coordonneesJoueur);
 
 	Vector3I blockjoueur(static_cast<int>(coordonneesJoueur.x) % 16, static_cast<int>(coordonneesJoueur.y), static_cast<int>(coordonneesJoueur.z) % 16);
+	if (coordonneesJoueur.x < 0)
+		blockjoueur.setX(blockjoueur.getX() + 15);
+	if (coordonneesJoueur.z < 0)
+		blockjoueur.setZ(blockjoueur.getZ() + 15);
 
-	if (chunks.count(chunkjoueur))
+	if (chunks.count(chunkjoueur)) //Test de si le chunk existe ou non
 	{
-		//cout << blockjoueur.getX() <<" " << blockjoueur.getY() << " " << blockjoueur.getZ() << " Test :" << chunks[chunkjoueur]->GetBlocks()->count(blockjoueur) << endl;
-
-		//marche pas du tout pour les coordonnées négatives
-		if (chunks[chunkjoueur]->GetBlocks()->count(blockjoueur))
+		if (chunks[chunkjoueur]->GetBlocks()->count(blockjoueur)) //Test de si il y a un bloc ou non à l'emplacement du joueur
 			return false;
 	}
 	return true;
