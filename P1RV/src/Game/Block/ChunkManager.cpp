@@ -32,16 +32,15 @@ void ChunkManager::LoadChunks(const glm::vec3& coordonneesJoueur)
 	//on va tenter de charger tout les chunks à 3/4 chunks de distance
 	Vector2I chunkjoueur(coordonneesJoueur);
 
-	this->GenerateChunk(chunkjoueur);
-
-	this->GenerateChunk(chunkjoueur + Vector2I(1, 1));
-	this->GenerateChunk(chunkjoueur + Vector2I(0, 1));
-	this->GenerateChunk(chunkjoueur + Vector2I(-1, 1));
-	this->GenerateChunk(chunkjoueur + Vector2I(1, 0));
-	this->GenerateChunk(chunkjoueur + Vector2I(-1, 0));
-	this->GenerateChunk(chunkjoueur + Vector2I(1, -1));
-	this->GenerateChunk(chunkjoueur + Vector2I(0, -1));
-	this->GenerateChunk(chunkjoueur + Vector2I(-1, -1));
+	int distanceChargement = 2;
+	
+	for(int i = -distanceChargement;i<=distanceChargement;i++)
+	{
+		for (int j = -distanceChargement + abs(i); j <= distanceChargement - abs(i); j++)
+		{
+			this->GenerateChunk(chunkjoueur + Vector2I(i, j));
+		}
+	}
 }
 
 void ChunkManager::UnloadChunks(const glm::vec3& coordonneesJoueur)
