@@ -15,7 +15,7 @@ private:
     const unsigned int SCR_HEIGHT = 600;
 
     // camera
-    glm::vec3 cameraPos = glm::vec3(8.0f, 2.0f, 8.0f);
+    glm::vec3 cameraPos = glm::vec3(8.0f, 6.0f, 8.0f);
     glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -32,10 +32,16 @@ private:
 
     ChunkManager* chunkManager;
 
+    bool movementModeVol = false; //true si on se déplace en volant false si on marche
+    bool toucheLeSol = false;
+    float yUpForce = 0;
+    //on utilise la touche m pour changer le mode de déplacement
+
     //Fonctions de callback statics données à OpenGL, leur rôle est d'appeler les fonctions de callback de la classe définies plus bas 
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
     static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
     static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 public:
     MaFenetre();
@@ -45,6 +51,7 @@ public:
     void framebuffer_size_callback(int width, int height);
     void mouse_callback(double xpos, double ypos);
     void scroll_callback(double xoffset, double yoffset);
+    void key_callback(int key, int scancode, int action, int mods);
 
     //Process des inputs
     void processInput();

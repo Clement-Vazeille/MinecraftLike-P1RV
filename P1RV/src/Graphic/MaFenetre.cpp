@@ -18,6 +18,12 @@ void MaFenetre::scroll_callback(GLFWwindow* window, double xoffset, double yoffs
     obj->scroll_callback(xoffset,yoffset);
 }
 
+void MaFenetre::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    MaFenetre* obj = static_cast<MaFenetre*>(glfwGetWindowUserPointer(window));
+    obj->key_callback(key,scancode,action,mods);
+}
+
 MaFenetre::MaFenetre()
 {
     glfwInit();
@@ -39,6 +45,7 @@ MaFenetre::MaFenetre()
     glfwSetFramebufferSizeCallback(mWindow, framebuffer_size_callback);
     glfwSetCursorPosCallback(mWindow, mouse_callback);
     glfwSetScrollCallback(mWindow, scroll_callback);
+    glfwSetKeyCallback(mWindow, key_callback);
 
     chunkManager = new ChunkManager();
 }
@@ -101,35 +108,85 @@ void MaFenetre::scroll_callback(double xoffset, double yoffset)
         fov = 45.0f;
 }
 
+void MaFenetre::key_callback(int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_SEMICOLON && action == GLFW_PRESS)
+    {
+        movementModeVol = !movementModeVol;
+        yUpForce = 0.f;
+    }
+
+    //traitement sortie de l'application
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        glfwSetWindowShouldClose(mWindow, true);
+}
+
 void MaFenetre::processInput()
 {
-    //traitement sortie de l'application
-    if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(mWindow, true);
 
     //Traitement sprint ou marche
     float cameraSpeed = static_cast<float>(10 * deltaTime);
     if ((glfwGetKey(mWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS))
         cameraSpeed *= 2.5;
-    
-    glm::vec3 movement = glm::vec3(0,0,0);
+
 
     //Traitement déplacements
-    if (glfwGetKey(mWindow, GLFW_KEY_W) == GLFW_PRESS)
-        movement += cameraSpeed * cameraFront;
-    if (glfwGetKey(mWindow, GLFW_KEY_S) == GLFW_PRESS)
-        movement -= cameraSpeed * cameraFront;
-    if (glfwGetKey(mWindow, GLFW_KEY_A) == GLFW_PRESS)
-        movement -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-    if (glfwGetKey(mWindow, GLFW_KEY_D) == GLFW_PRESS)
-        movement += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-    if (glfwGetKey(mWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
-        movement += glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)) * cameraSpeed;
-    if (glfwGetKey(mWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-        movement += glm::normalize(glm::vec3(0.0f, -1.0f, 0.0f)) * cameraSpeed;
+    glm::vec3 movement = glm::vec3(0,0,0);
+    if (movementModeVol) //déplacement en mode vol
+    {
+        if (glfwGetKey(mWindow, GLFW_KEY_W) == GLFW_PRESS)
+            movement += cameraSpeed * cameraFront;
+        if (glfwGetKey(mWindow, GLFW_KEY_S) == GLFW_PRESS)
+            movement -= cameraSpeed * cameraFront;
+        if (glfwGetKey(mWindow, GLFW_KEY_A) == GLFW_PRESS)
+            movement -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        if (glfwGetKey(mWindow, GLFW_KEY_D) == GLFW_PRESS)
+            movement += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        if (glfwGetKey(mWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
+            movement += glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)) * cameraSpeed;
+        if (glfwGetKey(mWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+            movement += glm::normalize(glm::vec3(0.0f, -1.0f, 0.0f)) * cameraSpeed;
 
-    if(chunkManager->isPositionAllowed(cameraPos+movement))
         cameraPos += movement;
+    }
+    
+    if (!movementModeVol)
+    {
+        //déplacement en mode au sol
+        glm::vec3 frontMove = glm::vec3(cameraFront.x, 0.f, cameraFront.z);
+        glm::vec3 rightMove = glm::vec3(glm::cross(cameraFront, cameraUp).x, 0.f, glm::cross(cameraFront, cameraUp).z);
+        if (glfwGetKey(mWindow, GLFW_KEY_W) == GLFW_PRESS)
+            movement += glm::normalize(frontMove) * cameraSpeed;
+        if (glfwGetKey(mWindow, GLFW_KEY_S) == GLFW_PRESS)
+            movement -= glm::normalize(frontMove) * cameraSpeed;
+        if (glfwGetKey(mWindow, GLFW_KEY_A) == GLFW_PRESS)
+            movement -= glm::normalize(rightMove) * cameraSpeed;
+        if (glfwGetKey(mWindow, GLFW_KEY_D) == GLFW_PRESS)
+            movement += glm::normalize(rightMove) * cameraSpeed;
+
+        //saut
+        if (glfwGetKey(mWindow, GLFW_KEY_SPACE) == GLFW_PRESS && toucheLeSol)
+            yUpForce = 1.6f;
+
+        movement.y = (-1.f + yUpForce) * cameraSpeed;
+        yUpForce = max(yUpForce - 1.f*deltaTime,0.f);
+
+        //Gestion des collisions au sol
+        glm::vec3 movX = glm::vec3(movement.x, 0, 0);
+        glm::vec3 movY = glm::vec3(0, movement.y, 0);
+        glm::vec3 movZ = glm::vec3(0, 0, movement.z);
+        if (chunkManager->isPositionAllowed(cameraPos + movX))
+            cameraPos += movX;
+        toucheLeSol = true;
+        if (chunkManager->isPositionAllowed(cameraPos + movY))
+        {
+            cameraPos += movY;
+            toucheLeSol = false;
+        }
+        if (chunkManager->isPositionAllowed(cameraPos + movZ))
+            cameraPos += movZ;
+    }
+    
 }
 
 void MaFenetre::upadateChunks()

@@ -58,7 +58,7 @@ void Chunk::FillBottomWithGrass(void)
 			this->AddBlock(grass);
 		}
 	}
-	CraftingTable* grass = new CraftingTable(8, 5, 8);
+	CraftingTable* grass = new CraftingTable(8, 1, 8);
 	this->AddBlock(grass);
 }
 
