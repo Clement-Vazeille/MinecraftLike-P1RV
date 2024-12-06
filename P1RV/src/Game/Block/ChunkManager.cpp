@@ -32,7 +32,7 @@ void ChunkManager::LoadChunks(const glm::vec3& coordonneesJoueur)
 	//on va tenter de charger tout les chunks à 3/4 chunks de distance
 	Vector2I chunkjoueur(coordonneesJoueur);
 
-	int distanceChargement = 2;
+	int distanceChargement = renderDistance;
 	
 	//On se déplace sur l'ensemble des blocs qui sont au plus à une distance "distanceChargement" du joueur
 	for(int i = -distanceChargement;i<=distanceChargement;i++)
@@ -47,7 +47,7 @@ void ChunkManager::LoadChunks(const glm::vec3& coordonneesJoueur)
 void ChunkManager::UnloadChunks(const glm::vec3& coordonneesJoueur)
 {
 	Vector2I chunkjoueurPosition(coordonneesJoueur);
-	int maxDistance = 2;
+	int maxDistance = renderDistance;
 
 	auto it = activeChunks.begin();
 
@@ -78,18 +78,75 @@ void ChunkManager::GenerateChunk(const Vector2I& coordonneesChunk)
 
 bool ChunkManager::isPositionAllowed(const glm::vec3& coordonneesJoueur)
 {
-	Vector2I chunkjoueur(coordonneesJoueur);
+	//Paramétrage de la taille du joueur ainsi que de la hauteur de ses yeux
+	float joueurTailleX = 0.8f;
+	float joueurTailleY = 2.5f;
+	float joueurTailleZ = 0.8f;
+	float ratioHauteurYeux = 0.95f;
+	glm::vec3 playerMins(coordonneesJoueur.x - (joueurTailleX/2.f), coordonneesJoueur.y - (joueurTailleX * ratioHauteurYeux), coordonneesJoueur.z - (joueurTailleZ / 2.f));
+	glm::vec3 playerMaxs(coordonneesJoueur.x + (joueurTailleX / 2.f), coordonneesJoueur.y + (joueurTailleX * (1-ratioHauteurYeux)), coordonneesJoueur.z + (joueurTailleZ / 2.f));
 
-	Vector3I blockjoueur(static_cast<int>(coordonneesJoueur.x) % 16, static_cast<int>(coordonneesJoueur.y), static_cast<int>(coordonneesJoueur.z) % 16);
-	if (coordonneesJoueur.x < 0)
-		blockjoueur.setX(blockjoueur.getX() + 15);
-	if (coordonneesJoueur.z < 0)
-		blockjoueur.setZ(blockjoueur.getZ() + 15);
-
-	if (chunks.count(chunkjoueur)) //Test de si le chunk existe ou non
+	//boucle for qui va parcourir les blocs proches du joueur (en 3*4*3 pour le moment) puis qui va check si il y a collision entre le joueur et chacun des blocs en mode aabb
+	for (int deltaX = -1; deltaX <= 1; deltaX++)
 	{
-		if (chunks[chunkjoueur]->GetBlocks()->count(blockjoueur)) //Test de si il y a un bloc ou non à l'emplacement du joueur
-			return false;
+		for (int deltaY = -2; deltaY <= 1; deltaY++)
+		{
+			for (int deltaZ = -1; deltaZ <= 1; deltaZ++)
+			{
+				Vector2I cooChunkActuel;
+				Vector3I cooBlockActuel;
+				if (findBlock(coordonneesJoueur + glm::vec3(deltaX, deltaY, deltaZ), &cooChunkActuel, &cooBlockActuel, nullptr))
+				{
+					glm::vec3 blockMins(cooBlockActuel.getX()+cooChunkActuel.getX()*16, cooBlockActuel.getY(), cooBlockActuel.getZ() + (cooChunkActuel.getZ() * 16));
+					glm::vec3 blockMaxs(blockMins.x+1,blockMins.y+1,blockMins.z+1);
+					
+					//cout << "Player Y Min : " << playerMins.y << " Block Y Min : " << blockMins.y << endl;
+
+					if(collisionAABB(playerMins,playerMaxs,blockMins,blockMaxs))
+						return false;
+				}
+			}
+		}
 	}
 	return true;
+	
+}
+
+bool ChunkManager::collisionAABB(const glm::vec3& aMins, const glm::vec3& aMaxs, const glm::vec3& bMins, const glm::vec3& bMaxs)
+{
+	return (
+		aMins.x <= bMaxs.x &&
+		aMaxs.x >= bMins.x &&
+		aMins.y <= bMaxs.y &&
+		aMaxs.y >= bMins.y &&
+		aMins.z <= bMaxs.z &&
+		aMaxs.z >= bMins.z
+		);
+}
+
+bool ChunkManager::findBlock(const glm::vec3& coordonnees, Vector2I* sortieCoordChunk, Vector3I* sortieCoordBloc, Block** block)
+{
+	Vector2I chunktrouve(coordonnees);
+
+	Vector3I blocktrouve(static_cast<int>(coordonnees.x) % 16, static_cast<int>(coordonnees.y), static_cast<int>(coordonnees.z) % 16);
+	if (coordonnees.x < 0)
+		blocktrouve.setX(blocktrouve.getX() + 15);
+	if (coordonnees.z < 0)
+		blocktrouve.setZ(blocktrouve.getZ() + 15);
+
+	if (chunks.count(chunktrouve)) //Test de si il y a un chunk ou non à l'emplacement
+	{
+		if (chunks[chunktrouve]->GetBlocks()->count(blocktrouve)) //Test de si il y a un bloc ou non à l'emplacement
+		{
+			if(sortieCoordChunk!=nullptr)
+				*sortieCoordChunk = chunktrouve;
+			if(sortieCoordBloc!=nullptr)
+				*sortieCoordBloc = blocktrouve;
+			if (block != nullptr)
+				*block = chunks[chunktrouve]->GetBlocks()->at(blocktrouve);
+			return true;
+		}
+	}
+
+	return false;
 }

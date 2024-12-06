@@ -14,6 +14,7 @@ private:
 	unordered_set<Chunk*> activeChunks;
 
 	int DistanceChunks(const Vector2I& coordonnesChunk1, const Vector2I& coordonnesChunk2);
+	int renderDistance = 2;
 
 public:
 	void AddChunk(Chunk* chunk);
@@ -31,4 +32,11 @@ public:
 
 	//Prend la position d'un joueur et renvoie si elle est legit ou pas
 	bool isPositionAllowed(const glm::vec3& coordonneesJoueur);
+
+	//Renvoie true si il y a une collision entre les a et b
+	bool collisionAABB(const glm::vec3& aMins,const glm::vec3& aMaxs, const glm::vec3& bMins, const glm::vec3& bMaxs);
+
+	//Prend en entrée une coordonnée et renvoie si il y a un bloc ou non à cet emplacement
+	//Si les pointeurs sont non nuls les valeurs où ils pointent sont remplacés par les valeurs du bloc correspondant si il existe
+	bool findBlock(const glm::vec3& coordonnees, Vector2I* sortieCoordChunk, Vector3I* sortieCoordBloc, Block** block);
 };
