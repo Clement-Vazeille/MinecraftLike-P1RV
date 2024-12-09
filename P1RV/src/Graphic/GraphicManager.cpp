@@ -7,6 +7,8 @@ void GraphicManager::DrawBlock(Block* block, const Vector2I& chunkPosition)
     model = glm::translate(model, glm::vec3(block->getPosition().getX() + chunkPosition.getX(), block->getPosition().getY(), block->getPosition().getZ() + chunkPosition.getZ()));
     ourShader.setMat4("model", model);
 
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glLineWidth(10);
     //On assigne à chaque face sa texture correspondante
     for (int j = 0; j < 6; j++)
     {
@@ -38,7 +40,30 @@ void GraphicManager::DrawChunkManager(ChunkManager* chunkManager)
     }
 }
 
+void GraphicManager::HighlightBlock(Block* block, const Vector2I& chunkPosition)
+{
+    if (block != nullptr)
+    {
+        //Calcul de la matrice model pour l'objet actuel qui est ensuite envoyé au shader
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(block->getPosition().getX() + (chunkPosition.getX()*16), block->getPosition().getY(), block->getPosition().getZ() + (chunkPosition.getZ() * 16)));
+        selectionShader.setMat4("model", model);
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glLineWidth(10);
+        //On assigne à chaque face sa texture correspondante
+        for (int j = 0; j < 6; j++)
+        {
+            textureManager.BindTexture(block->getTexturei(j));
+            glDrawArrays(GL_TRIANGLES, j * 6, 6);
+        }
+        glLineWidth(1);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+}
+
 GraphicManager::GraphicManager() : ourShader("src/Graphic/Shader/shader.vs", "src/Graphic/Shader/shader.fs"),
+    selectionShader("src/Graphic/Shader/shaderSelection.vs","src/Graphic/Shader/shaderSelection.fs"),
     VAO(0),VBO(0)
 {
 }
@@ -144,6 +169,12 @@ void GraphicManager::Draw(MaFenetre* fenetre)
    
     //On dessine le monde
     this->DrawChunkManager(fenetre->getChunkManager());
+
+    selectionShader.use();
+    selectionShader.setMat4("projection", projection);
+    selectionShader.setMat4("view", view);
+
+    this->HighlightBlock(fenetre->getHighlightedBlock(), fenetre->getHighlightedBlockChunkPosition());
 
     //On swap les buffers glfw et on poll les events d'input output
     glfwSwapBuffers(fenetre->getWindow());

@@ -11,18 +11,21 @@
 //Classe qui manage la partie Graphique de l'application
 //Elle prend en entrée une fenetre ainsi que l'ensemble des blocks et va dessiner les blocks sur la fenetre
 
-// !!!!!Il n'est supposé avoir qu'une seule instance de cette classe!!!!!
+// !!!!!Il n'est supposEavoir qu'une seule instance de cette classe!!!!!
 class GraphicManager
 {
 private:
 	TextureManager textureManager;
 	Shader ourShader;
+	Shader selectionShader;
 	unsigned int VBO, VAO;
 
 	//Fonctions utilitaires qui permettent de dessiner nos éléments
 	void DrawBlock(Block* block, const Vector2I& chunkPosition);
 	void DrawChunk(Chunk* chunk);
 	void DrawChunkManager(ChunkManager* chunkManager);
+
+	void HighlightBlock(Block* block, const Vector2I& chunkPosition);
 public:
 	GraphicManager();
 	~GraphicManager();

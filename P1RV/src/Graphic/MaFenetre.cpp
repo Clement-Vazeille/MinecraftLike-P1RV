@@ -75,11 +75,11 @@ void MaFenetre::mouse_callback(double xposIn, double yposIn)
     }
 
     float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // inversé car les coordonnées y vont de bas en haut
+    float yoffset = lastY - ypos; // inversEcar les coordonnées y vont de bas en haut
     lastX = xpos;
     lastY = ypos;
 
-    float sensitivity = 0.1f; // sensibilité du déplacement
+    float sensitivity = 0.1f; // sensibilitEdu déplacement
     xoffset *= sensitivity;
     yoffset *= sensitivity;
 
@@ -193,6 +193,8 @@ void MaFenetre::upadateChunks()
 {
     chunkManager->LoadChunks(cameraPos);
     chunkManager->UnloadChunks(cameraPos);
+
+    chunkManager->findBlock(glm::vec3(3, 0, 3), &highlightedBlockChunkPosition, nullptr, &higlightedBlock);
 }
 
 void MaFenetre::setDeltaTime(float delta)
@@ -248,4 +250,14 @@ unsigned int MaFenetre::getSCR_HEIGHT(void) const
 ChunkManager* MaFenetre::getChunkManager(void)
 {
     return chunkManager;
+}
+
+Block* MaFenetre::getHighlightedBlock(void) const
+{
+    return higlightedBlock;
+}
+
+Vector2I MaFenetre::getHighlightedBlockChunkPosition(void) const
+{
+    return highlightedBlockChunkPosition;
 }

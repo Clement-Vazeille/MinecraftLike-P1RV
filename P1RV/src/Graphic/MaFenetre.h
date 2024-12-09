@@ -20,14 +20,14 @@ private:
     glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
     bool firstMouse = true;
-    float yaw = -90.0f;	// yaw est initialisÈ ‡ -90.0 degrÈs car un yaw ‡ 0.0 pointerait vers la gauche
+    float yaw = -90.0f;	// yaw est initialisÅEÅE-90.0 degrÈs car un yaw ÅE0.0 pointerait vers la gauche
     float pitch = 0.0f;
     float lastX = 800.0f / 2.0;
     float lastY = 600.0 / 2.0;
     float fov = 45.0f;
 
     // timing
-    float deltaTime = 0.0f;	// temps ÈcoulÈ entre la derniËre frame et la frame actuelle
+    float deltaTime = 0.0f;	// temps ÈcoulÅEentre la derniËre frame et la frame actuelle
     float lastFrame = 0.0f; //timestamp de la derniËre frame
 
     ChunkManager* chunkManager;
@@ -37,7 +37,10 @@ private:
     float yUpForce = 0;
     //on utilise la touche m pour changer le mode de dÈplacement
 
-    //Fonctions de callback statics donnÈes ‡ OpenGL, leur rÙle est d'appeler les fonctions de callback de la classe dÈfinies plus bas 
+    Block* higlightedBlock = nullptr;
+    Vector2I highlightedBlockChunkPosition;
+
+    //Fonctions de callback statics donnÈes ÅEOpenGL, leur rÙle est d'appeler les fonctions de callback de la classe dÈfinies plus bas 
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
     static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
     static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -73,6 +76,7 @@ public:
     unsigned int getSCR_WIDTH(void) const;
     unsigned int getSCR_HEIGHT(void) const;
     ChunkManager* getChunkManager(void);
-
+    Block* getHighlightedBlock(void) const;
+    Vector2I getHighlightedBlockChunkPosition(void) const;
 };
 
