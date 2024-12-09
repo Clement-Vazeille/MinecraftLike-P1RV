@@ -1,6 +1,7 @@
 #include "ChunkManager.h"
 #include <iostream>
 #include <algorithm>
+#include "SpecificBlocks/GrassBlock.h"
 
 int ChunkManager::DistanceChunks(const Vector2I& coordonnesChunk1, const Vector2I& coordonnesChunk2)
 {
@@ -19,6 +20,16 @@ void ChunkManager::AddChunk(Chunk* chunk)
 unordered_set<Chunk*>* ChunkManager::GetActiveChunks()
 {
 	return &activeChunks;
+}
+
+void ChunkManager::AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlock)
+{
+	cout << "ajout block"<<endl ;
+	if (chunks.count(coordChunk)) //test d' existence du chunk
+	{
+		GrassBlock* grassBlock = new GrassBlock(coordBlock);
+		chunks.at(coordChunk)->AddBlock(grassBlock);
+	}
 }
 
 /*
@@ -99,8 +110,6 @@ bool ChunkManager::isPositionAllowed(const glm::vec3& coordonneesJoueur)
 				{
 					glm::vec3 blockMins(cooBlockActuel.getX()+cooChunkActuel.getX()*16, cooBlockActuel.getY(), cooBlockActuel.getZ() + (cooChunkActuel.getZ() * 16));
 					glm::vec3 blockMaxs(blockMins.x+1,blockMins.y+1,blockMins.z+1);
-					
-					//cout << "Player Y Min : " << playerMins.y << " Block Y Min : " << blockMins.y << endl;
 
 					if(collisionAABB(playerMins,playerMaxs,blockMins,blockMaxs))
 						return false;

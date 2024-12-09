@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\BlockSelector.cpp" />
     <ClCompile Include="src\Graphic\MaFenetre.cpp" />
     <ClCompile Include="src\Game\Block\SpecificBlocks\GrassBlockSnow.cpp" />
     <ClCompile Include="src\Game\Block\SpecificBlocks\GrassBlock.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="src\Game\Maths\Vector3I.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game\BlockSelector.h" />
     <ClInclude Include="src\Graphic\MaFenetre.h" />
     <ClInclude Include="src\Game\Block\SpecificBlocks\GrassBlockSnow.h" />
     <ClInclude Include="src\Game\Block\SpecificBlocks\GrassBlock.h" />

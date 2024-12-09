@@ -13,7 +13,6 @@
 
 int main()
 {
-
     // Création de notre fenêtre et initialisation de GLFW
     MaFenetre* maFenetre = new MaFenetre();
     
@@ -39,11 +38,11 @@ int main()
         maFenetre->setDeltaTime(currentFrame - maFenetre->getLastFrame());
         maFenetre->setLastFrame(currentFrame);
 
-        // Upadate du monde
+        // Upadate du jeu
         maFenetre->upadateChunks();
-
-        // Traitement des input
-        maFenetre->processInput();
+        maFenetre->processMovements();
+        maFenetre->selectBlock();
+        maFenetre->processClicks();
 
         // Render
         graphicManager.Draw(maFenetre);

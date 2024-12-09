@@ -48,6 +48,7 @@ MaFenetre::MaFenetre()
     glfwSetKeyCallback(mWindow, key_callback);
 
     chunkManager = new ChunkManager();
+    blockSelector = new BlockSelector();
 }
 
 MaFenetre::~MaFenetre()
@@ -121,7 +122,7 @@ void MaFenetre::key_callback(int key, int scancode, int action, int mods)
         glfwSetWindowShouldClose(mWindow, true);
 }
 
-void MaFenetre::processInput()
+void MaFenetre::processMovements()
 {
 
     //Traitement sprint ou marche
@@ -168,33 +169,47 @@ void MaFenetre::processInput()
         if (glfwGetKey(mWindow, GLFW_KEY_SPACE) == GLFW_PRESS && toucheLeSol)
             yUpForce = 1.6f;
 
-        movement.y = (-1.f + yUpForce) * cameraSpeed;
+        if(toucheLeSol==false)
+            movement.y = (-1.f + yUpForce) * static_cast<float>(10 * deltaTime);
         yUpForce = max(yUpForce - 1.f*deltaTime,0.f);
 
         //Gestion des collisions au sol
         glm::vec3 movX = glm::vec3(movement.x, 0, 0);
         glm::vec3 movY = glm::vec3(0, movement.y, 0);
         glm::vec3 movZ = glm::vec3(0, 0, movement.z);
+        
         if (chunkManager->isPositionAllowed(cameraPos + movX))
             cameraPos += movX;
+            
         toucheLeSol = true;
         if (chunkManager->isPositionAllowed(cameraPos + movY))
         {
             cameraPos += movY;
             toucheLeSol = false;
         }
+        
         if (chunkManager->isPositionAllowed(cameraPos + movZ))
             cameraPos += movZ;
+            
     }
     
+}
+
+void MaFenetre::processClicks()
+{
+    if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS && higlightedBlock!=nullptr)
+        chunkManager->AddBlock(highlightedBlockChunkPosition, higlightedBlock->getPosition() + Vector3I(0, 1, 0));
 }
 
 void MaFenetre::upadateChunks()
 {
     chunkManager->LoadChunks(cameraPos);
     chunkManager->UnloadChunks(cameraPos);
+}
 
-    chunkManager->findBlock(glm::vec3(3, 0, 3), &highlightedBlockChunkPosition, nullptr, &higlightedBlock);
+void MaFenetre::selectBlock()
+{
+    blockSelector->SelectBlock(&higlightedBlock, &highlightedBlockChunkPosition, chunkManager, cameraPos, cameraFront);
 }
 
 void MaFenetre::setDeltaTime(float delta)

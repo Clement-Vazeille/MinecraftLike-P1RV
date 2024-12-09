@@ -1,6 +1,7 @@
 #pragma once
 #include "../IncludeLibrairies.h"
 #include "../Game/Block/ChunkManager.h"
+#include "../Game/BlockSelector.h"
 //Class qui contient la fenêtre de l'application ainsi que l'ensemble des variables décrivants les états généraux de l'application
 //Elle contient aussi les fonctions de callback de l'application
 
@@ -31,6 +32,7 @@ private:
     float lastFrame = 0.0f; //timestamp de la dernière frame
 
     ChunkManager* chunkManager;
+    BlockSelector* blockSelector;
 
     bool movementModeVol = false; //true si on se déplace en volant false si on marche
     bool toucheLeSol = false;
@@ -56,11 +58,17 @@ public:
     void scroll_callback(double xoffset, double yoffset);
     void key_callback(int key, int scancode, int action, int mods);
 
-    //Process des inputs
-    void processInput();
+    //Process des inputs de mouvement
+    void processMovements();
+
+    //Process des inputs de la souris
+    void processClicks();
 
     //Charge et génère les chunks proches, puis décharge les chunks éloignés
     void upadateChunks();
+
+    //Sélectionne le block pointé par le joueur
+    void selectBlock();
 
     //setters
     void setDeltaTime(float delta);
