@@ -36,6 +36,17 @@ void Chunk::AddBlock(Block* b)
 	blocks.insert(make_pair(blockPosition,b));
 }
 
+void Chunk::DestroyBlock(const Vector3I& coordBlock)
+{
+	//test d'existence du block
+	if (blocks.count(coordBlock))
+	{
+		if (blocks.at(coordBlock)!=nullptr)
+			delete blocks.at(coordBlock);
+		blocks.erase(coordBlock);
+	}
+}
+
 void Chunk::FillBottomWithSnow(void)
 {
 	for (int x = 0; x < sizeX; x++)

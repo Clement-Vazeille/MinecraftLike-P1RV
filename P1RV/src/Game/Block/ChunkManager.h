@@ -21,7 +21,9 @@ public:
 	//unordered_map<Vector2I, Chunk*, Vector2I::HashFoncteur>* GetActiveChunks();
 	unordered_set<Chunk*>* GetActiveChunks();
 
+	//Fonction de création/destruction de blocks appelées lors d'un click de l'utilisateur
 	void AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlock);
+	void DestroyBlock(const Vector2I& coordChunk, const Vector3I& coordBlock);
 
 	//fonction qui va charger et généré si besoin les chunks à proximité du joueur
 	void LoadChunks(const glm::vec3& coordonneesJoueur); 

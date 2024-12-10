@@ -197,8 +197,14 @@ void MaFenetre::processMovements()
 
 void MaFenetre::processClicks()
 {
-    if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS && higlightedBlock!=nullptr)
-        chunkManager->AddBlock(highlightedBlockChunkPosition, higlightedBlock->getPosition() + Vector3I(0, 1, 0));
+    if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS && highlightedBlock!=nullptr)
+        chunkManager->AddBlock(highlightedBlockChunkPosition, highlightedBlock->getPosition() + highlightedFace);
+    if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && highlightedBlock != nullptr)
+    {
+        chunkManager->DestroyBlock(highlightedBlockChunkPosition, highlightedBlock->getPosition());
+        this->selectBlock(); //On sélectionne un nouveau block pour toujours avoir un block affiché comme sélectionné, en pratique on pourra rien faire se ce block lors de cette frame
+        //Permet aussi de faire que le pointeur vers le block sélectionné ne pointe plus sur le block supprimé
+    }
 }
 
 void MaFenetre::upadateChunks()
@@ -209,7 +215,7 @@ void MaFenetre::upadateChunks()
 
 void MaFenetre::selectBlock()
 {
-    blockSelector->SelectBlock(&higlightedBlock, &highlightedBlockChunkPosition, chunkManager, cameraPos, cameraFront);
+    blockSelector->SelectBlock(&highlightedBlock, &highlightedBlockChunkPosition, &highlightedFace, chunkManager, cameraPos, cameraFront);
 }
 
 void MaFenetre::setDeltaTime(float delta)
@@ -269,7 +275,7 @@ ChunkManager* MaFenetre::getChunkManager(void)
 
 Block* MaFenetre::getHighlightedBlock(void) const
 {
-    return higlightedBlock;
+    return highlightedBlock;
 }
 
 Vector2I MaFenetre::getHighlightedBlockChunkPosition(void) const

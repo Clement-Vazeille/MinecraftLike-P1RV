@@ -23,6 +23,7 @@ public:
 	Chunk(const Vector2I& v);
 
 	void AddBlock(Block* b);//ajoute un block dans un chunk à la position correspondante
+	void DestroyBlock(const Vector3I& coordBlock);
 	void FillBottomWithSnow(void);
 	void FillBottomWithGrass(void);
 

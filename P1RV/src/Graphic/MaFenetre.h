@@ -39,8 +39,9 @@ private:
     float yUpForce = 0;
     //on utilise la touche m pour changer le mode de dÈplacement
 
-    Block* higlightedBlock = nullptr;
+    Block* highlightedBlock = nullptr;
     Vector2I highlightedBlockChunkPosition;
+    Vector3I highlightedFace;
 
     //Fonctions de callback statics donnÈes ÅEOpenGL, leur rÙle est d'appeler les fonctions de callback de la classe dÈfinies plus bas 
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);

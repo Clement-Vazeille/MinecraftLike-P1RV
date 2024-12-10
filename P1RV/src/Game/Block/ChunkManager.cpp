@@ -24,11 +24,18 @@ unordered_set<Chunk*>* ChunkManager::GetActiveChunks()
 
 void ChunkManager::AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlock)
 {
-	cout << "ajout block"<<endl ;
 	if (chunks.count(coordChunk)) //test d' existence du chunk
 	{
 		GrassBlock* grassBlock = new GrassBlock(coordBlock);
 		chunks.at(coordChunk)->AddBlock(grassBlock);
+	}
+}
+
+void ChunkManager::DestroyBlock(const Vector2I& coordChunk, const Vector3I& coordBlock)
+{
+	if (chunks.count(coordChunk)) //test d' existence du chunk
+	{
+		chunks.at(coordChunk)->DestroyBlock(coordBlock);
 	}
 }
 
