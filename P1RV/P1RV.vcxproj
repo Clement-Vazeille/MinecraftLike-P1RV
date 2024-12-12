@@ -192,6 +192,10 @@
   <ItemGroup>
     <None Include="src\Graphic\Shader\shader.fs" />
     <None Include="src\Graphic\Shader\shader.vs" />
+    <None Include="src\Graphic\Shader\shaderSelection.fs" />
+    <None Include="src\Graphic\Shader\shaderSelection.vs" />
+    <None Include="src\Graphic\Shader\shaderViseur.fs" />
+    <None Include="src\Graphic\Shader\shaderViseur.vs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Block\birch_log.png" />

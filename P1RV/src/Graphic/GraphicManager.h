@@ -18,7 +18,9 @@ private:
 	TextureManager textureManager;
 	Shader ourShader;
 	Shader selectionShader;
-	unsigned int VBO, VAO;
+	Shader viseurShader;
+	unsigned int VBOblock, VAOblock;
+	unsigned int VBOviseur, VAOviseur, EBOviseur;
 
 	//Fonctions utilitaires qui permettent de dessiner nos éléments
 	void DrawBlock(Block* block, const Vector2I& chunkPosition);
@@ -26,6 +28,8 @@ private:
 	void DrawChunkManager(ChunkManager* chunkManager);
 
 	void HighlightBlock(Block* block, const Vector2I& chunkPosition);
+
+	void DrawViseur();
 public:
 	GraphicManager();
 	~GraphicManager();
