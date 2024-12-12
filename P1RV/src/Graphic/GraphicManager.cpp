@@ -6,14 +6,12 @@ void GraphicManager::DrawBlock(Block* block, const Vector2I& chunkPosition)
     glm::mat4 model = glm::mat4(1.0f); 
     model = glm::translate(model, glm::vec3(block->getPosition().getX() + chunkPosition.getX(), block->getPosition().getY(), block->getPosition().getZ() + chunkPosition.getZ()));
     ourShader.setMat4("model", model);
-
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    //glLineWidth(10);
+    
     //On assigne à chaque face sa texture correspondante
     for (int j = 0; j < 6; j++)
     {
         textureManager.BindTexture(block->getTexturei(j));
-        glDrawArrays(GL_TRIANGLES, j * 6, 6);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(j*6*sizeof(int)));
     }
 }
 
@@ -51,12 +49,9 @@ void GraphicManager::HighlightBlock(Block* block, const Vector2I& chunkPosition)
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glLineWidth(10);
-        //On assigne à chaque face sa texture correspondante
-        for (int j = 0; j < 6; j++)
-        {
-            textureManager.BindTexture(block->getTexturei(j));
-            glDrawArrays(GL_TRIANGLES, j * 6, 6);
-        }
+
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+
         glLineWidth(1);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
@@ -65,20 +60,12 @@ void GraphicManager::HighlightBlock(Block* block, const Vector2I& chunkPosition)
 void GraphicManager::DrawViseur()
 {
     glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, nullptr);
-    //glDrawArrays(GL_TRIANGLES, 0, 3);
-    /*
-    for (int j = 0; j < 4; j++)
-    {
-        glDrawArrays(GL_TRIANGLES, j * 3, 3);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-    }
-    */
 }
 
 GraphicManager::GraphicManager() : ourShader("src/Graphic/Shader/shader.vs", "src/Graphic/Shader/shader.fs"),
     selectionShader("src/Graphic/Shader/shaderSelection.vs","src/Graphic/Shader/shaderSelection.fs"),
     viseurShader("src/Graphic/Shader/shaderViseur.vs", "src/Graphic/Shader/shaderViseur.fs"),
-    VAOblock(0),VBOblock(0),VAOviseur(0),VBOviseur(0),EBOviseur(0)
+    VAOblock(0),VBOblock(0),EBOblock(0),VAOviseur(0),VBOviseur(0),EBOviseur(0)
 {
 }
 
@@ -86,6 +73,7 @@ GraphicManager::~GraphicManager()
 {
     glDeleteVertexArrays(1, &VAOblock);
     glDeleteBuffers(1, &VBOblock);
+    glDeleteBuffers(1, &EBOviseur);
     glDeleteVertexArrays(1, &VAOviseur);
     glDeleteBuffers(1, &VBOviseur);
     glDeleteBuffers(1, &EBOviseur);
@@ -104,53 +92,65 @@ void GraphicManager::Load(MaFenetre* fenetre)
         -0.5f, -0.5f, -0.5f,  1.0f, 1.0f, //face arriere
          0.5f,  0.5f, -0.5f,  0.0f, 0.0f,
          0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
         -0.5f,  0.5f, -0.5f,  1.0f, 0.0f,
 
         -0.5f, -0.5f,  0.5f,  0.0f, 1.0f, //face avant
          0.5f, -0.5f,  0.5f,  1.0f, 1.0f,
          0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
         -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 1.0f,
 
         -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, //face gauche
         -0.5f,  0.5f, -0.5f,  0.0f, 0.0f,
         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
         -0.5f, -0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
          0.5f,  0.5f,  0.5f,  0.0f, 0.0f, //face droite
          0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
          0.5f,  0.5f, -0.5f,  1.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
          0.5f, -0.5f,  0.5f,  0.0f, 1.0f,
 
         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, //face dessous
          0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
          0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
         
         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, //face dessus
         0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 
         0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 
         -0.5f,  0.5f,  0.5f,  0.0f, 0.0f  
+    };
+
+    unsigned int indicesCube[] = {
+    0, 1, 2, 
+    1, 0, 3,  
+
+    4, 5, 6, 
+    6, 7, 4, 
+
+    8, 9, 10, 
+    10, 11, 8,  
+
+    12, 13, 14, 
+    13, 12, 15,   
+
+    16, 17, 18,
+    18, 19, 16,
+
+    20, 21, 22,
+    21, 20, 23
     };
 
     glGenVertexArrays(1, &VAOblock);
     glGenBuffers(1, &VBOblock);
+    glGenBuffers(1, &EBOblock);
 
     glBindVertexArray(VAOblock);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBOblock);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOblock);
+
     glBufferData(GL_ARRAY_BUFFER, sizeof(verticesCube), verticesCube, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicesCube), indicesCube, GL_STATIC_DRAW);
 
     // position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);

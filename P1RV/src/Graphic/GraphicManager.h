@@ -19,7 +19,7 @@ private:
 	Shader ourShader;
 	Shader selectionShader;
 	Shader viseurShader;
-	unsigned int VBOblock, VAOblock;
+	unsigned int VBOblock, VAOblock, EBOblock;
 	unsigned int VBOviseur, VAOviseur, EBOviseur;
 
 	//Fonctions utilitaires qui permettent de dessiner nos éléments
