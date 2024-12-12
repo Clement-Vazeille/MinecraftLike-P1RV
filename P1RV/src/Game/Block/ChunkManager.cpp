@@ -8,6 +8,30 @@ int ChunkManager::DistanceChunks(const Vector2I& coordonnesChunk1, const Vector2
 	return abs(coordonnesChunk1.getX()-coordonnesChunk2.getX()) + abs(coordonnesChunk1.getZ() - coordonnesChunk2.getZ());
 }
 
+void ChunkManager::RecentrerChunkPosition(Vector2I& coordChunk, Vector3I& coordBlock)
+{
+	if (coordBlock.getX() < 0)
+	{
+		coordChunk+=Vector2I((-coordBlock.getX()/16)-1,0);
+		coordBlock.setX((coordBlock.getX() % 16) + 16);
+	}
+	if (coordBlock.getZ() < 0)
+	{
+		coordChunk += Vector2I(0,(-coordBlock.getZ() / 16) - 1);
+		coordBlock.setZ((coordBlock.getZ() % 16) + 16);
+	}
+	if (coordBlock.getX() >= 16)
+	{
+		coordChunk += Vector2I((coordBlock.getX() / 16), 0);
+		coordBlock.setX((coordBlock.getX() % 16));
+	}
+	if (coordBlock.getZ() >= 16)
+	{
+		coordChunk += Vector2I(0,(coordBlock.getZ() / 16));
+		coordBlock.setZ((coordBlock.getZ() % 16));
+	}
+}
+
 void ChunkManager::AddChunk(Chunk* chunk)
 {
 	if (!chunks.count(chunk->getPosition())) //test de non existence du chunk
@@ -22,12 +46,17 @@ unordered_set<Chunk*>* ChunkManager::GetActiveChunks()
 	return &activeChunks;
 }
 
-void ChunkManager::AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlock)
+void ChunkManager::AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlock, const glm::vec3& coordonneesJoueur)
 {
-	if (chunks.count(coordChunk)) //test d' existence du chunk
+	Vector2I coordChunkCopie(coordChunk);
+	Vector3I coordBlockCopie(coordBlock);
+	RecentrerChunkPosition(coordChunkCopie, coordBlockCopie);
+	if (chunks.count(coordChunkCopie)) //test d' existence du chunk
 	{
-		GrassBlock* grassBlock = new GrassBlock(coordBlock);
-		chunks.at(coordChunk)->AddBlock(grassBlock);
+		GrassBlock* grassBlock = new GrassBlock(coordBlockCopie);
+		chunks.at(coordChunkCopie)->AddBlock(grassBlock);
+		if (!this->isPositionAllowed(coordonneesJoueur))
+			this->DestroyBlock(coordChunkCopie, coordBlockCopie);
 	}
 }
 
@@ -38,12 +67,6 @@ void ChunkManager::DestroyBlock(const Vector2I& coordChunk, const Vector3I& coor
 		chunks.at(coordChunk)->DestroyBlock(coordBlock);
 	}
 }
-
-/*
-unordered_map<Vector2I, Chunk*,Vector2I::HashFoncteur>* ChunkManager::GetActiveChunks()
-{
-	return &chunks;
-}*/
 
 void ChunkManager::LoadChunks(const glm::vec3& coordonneesJoueur)
 {

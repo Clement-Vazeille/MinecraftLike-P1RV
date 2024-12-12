@@ -16,13 +16,16 @@ private:
 	int DistanceChunks(const Vector2I& coordonnesChunk1, const Vector2I& coordonnesChunk2);
 	int renderDistance = 2;
 
+	//Modifie une coordonne de chunk et une coordonne de block pour qu'elles devient valident, si la coordonne du bloc dans le repere du chunk depasse la limite du chunk alors on change le chunk du block
+	void RecentrerChunkPosition(Vector2I& coordChunk, Vector3I& coordBlock);
 public:
 	void AddChunk(Chunk* chunk);
 	//unordered_map<Vector2I, Chunk*, Vector2I::HashFoncteur>* GetActiveChunks();
 	unordered_set<Chunk*>* GetActiveChunks();
 
 	//Fonction de création/destruction de blocks appelées lors d'un click de l'utilisateur
-	void AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlock);
+	//La fonction addBlock prend en entrée les coordonnees du joueur pour vérifier que le joueur n'est pas positionné sur le bloc qui est placé
+	void AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlock, const glm::vec3& coordonneesJoueur);
 	void DestroyBlock(const Vector2I& coordChunk, const Vector3I& coordBlock);
 
 	//fonction qui va charger et généré si besoin les chunks à proximité du joueur

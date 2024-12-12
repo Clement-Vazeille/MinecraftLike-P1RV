@@ -30,7 +30,7 @@ void Chunk::AddBlock(Block* b)
 		blockPosition.getZ() < 0 || blockPosition.getZ() >= sizeZ
 		)
 	{
-		cout << "Le jeu a essayé d'ajouter un bloc à un chunk en dehors de ce chunk" << endl;
+		cout << "Le jeu a essaye d'ajouter un bloc a un chunk en dehors de ce chunk" << endl;
 		return;
 	}
 	blocks.insert(make_pair(blockPosition,b));
