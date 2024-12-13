@@ -65,7 +65,11 @@ void GraphicManager::DrawViseur()
 GraphicManager::GraphicManager() : ourShader("src/Graphic/Shader/shader.vs", "src/Graphic/Shader/shader.fs"),
     selectionShader("src/Graphic/Shader/shaderSelection.vs","src/Graphic/Shader/shaderSelection.fs"),
     viseurShader("src/Graphic/Shader/shaderViseur.vs", "src/Graphic/Shader/shaderViseur.fs"),
-    VAOblock(0),VBOblock(0),EBOblock(0),VAOviseur(0),VBOviseur(0),EBOviseur(0)
+    hotbarShader("src/Graphic/Shader/shaderHotbar.vs", "src/Graphic/Shader/shaderHotbar.fs"),
+    hotbarSelectionShader("src/Graphic/Shader/shaderHotbarSelection.vs", "src/Graphic/Shader/shaderHotbarSelection.fs"),
+    hotbarBlockShader("src/Graphic/Shader/shaderHotbarBlock.vs", "src/Graphic/Shader/shaderHotbarBlock.fs"),
+    VAOblock(0),VBOblock(0),EBOblock(0),VAOviseur(0),VBOviseur(0),EBOviseur(0),
+    VAOhotbar(0), VBOhotbar(0), EBOhotbar(0), VAOhotbarSelector(0), VBOhotbarSelector(0), EBOhotbarSelector(0)
 {
 }
 
@@ -222,6 +226,26 @@ void GraphicManager::Load(MaFenetre* fenetre)
     // position attribute
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    // initialisation des sommets de la hotbar
+    // ------------------------------------------------------------------
+    float verticesHotbar[] = { //position vis à vis du spawn
+        //Format : 
+        //-,-
+        //+,-
+        //+,+
+        //-,+
+
+         -0.115f, -0.01f, 0.0f, 0.0f,    //à changer
+         -0.04f, -0.01f, 1.0f, 0.0f,
+         -0.04f, 0.01f, 1.0f, 1.0f,
+         -0.115f,  0.01f, 0.0f, 1.0f,
+    };
+
+    unsigned int indicesHotbar[] = {
+    0, 1, 2, // bottom triangle
+    2, 3, 0,  // top triangle
+    };
 
     glEnable(GL_CULL_FACE);
 }

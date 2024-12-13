@@ -196,8 +196,8 @@
     <None Include="src\Graphic\Shader\shaderHotbar.vs" />
     <None Include="src\Graphic\Shader\shaderHotbarBlock.fs" />
     <None Include="src\Graphic\Shader\shaderHotbarBlock.vs" />
-    <None Include="src\Graphic\Shader\shaderHotbarSelected.fs" />
-    <None Include="src\Graphic\Shader\shaderHotbarSelected.vs" />
+    <None Include="src\Graphic\Shader\shaderHotbarSelection.fs" />
+    <None Include="src\Graphic\Shader\shaderHotbarSelection.vs" />
     <None Include="src\Graphic\Shader\shaderSelection.fs" />
     <None Include="src\Graphic\Shader\shaderSelection.vs" />
     <None Include="src\Graphic\Shader\shaderViseur.fs" />

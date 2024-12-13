@@ -19,8 +19,15 @@ private:
 	Shader ourShader;
 	Shader selectionShader;
 	Shader viseurShader;
-	unsigned int VBOblock, VAOblock, EBOblock;
+	
+	Shader hotbarShader;
+	Shader hotbarSelectionShader;
+	Shader hotbarBlockShader;
+
+	unsigned int VBOblock, VAOblock, EBOblock; //used by blocks, block selection and will be used for hotbarBlocks
 	unsigned int VBOviseur, VAOviseur, EBOviseur;
+	unsigned int VBOhotbar, VAOhotbar, EBOhotbar;
+	unsigned int VBOhotbarSelector, VAOhotbarSelector, EBOhotbarSelector;
 
 	//Fonctions utilitaires qui permettent de dessiner nos éléments
 	void DrawBlock(Block* block, const Vector2I& chunkPosition);
