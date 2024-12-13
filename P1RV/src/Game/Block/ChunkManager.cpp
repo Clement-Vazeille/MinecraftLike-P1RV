@@ -121,9 +121,9 @@ bool ChunkManager::isPositionAllowed(const glm::vec3& coordonneesJoueur)
 {
 	glm::vec3 coordonneesReel = coordonneesJoueur + glm::vec3(0.5f, 0.5f, 0.5f);
 	//Paramétrage de la taille du joueur ainsi que de la hauteur de ses yeux
-	float joueurTailleX = 0.8f;
+	float joueurTailleX = 0.25f;
 	float joueurTailleY = 1.6f;
-	float joueurTailleZ = 0.8f;
+	float joueurTailleZ = 0.25f;
 	float ratioHauteurYeux = 0.80f;
 	glm::vec3 playerMins(coordonneesReel.x - (joueurTailleX/2.f), coordonneesReel.y - (joueurTailleY * ratioHauteurYeux), coordonneesReel.z - (joueurTailleZ / 2.f));
 	glm::vec3 playerMaxs(coordonneesReel.x + (joueurTailleX / 2.f), coordonneesReel.y + (joueurTailleY * (1-ratioHauteurYeux)), coordonneesReel.z + (joueurTailleZ / 2.f));
