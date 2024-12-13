@@ -153,6 +153,8 @@ float BlockSelector::CollisionFaceDroite(Block* selectedBlock, Vector2I selected
 
 void BlockSelector::SelectBlock(Block** selectedBlock, Vector2I* selectedBlockChunkPosition, Vector3I* faceDirection, ChunkManager* chunkManager, const glm::vec3& cameraPos, const glm::vec3& cameraFront)
 {
+	glm::vec3 coordonneesJoueur = cameraPos + glm::vec3(0.5f, 0.5f, 0.5f);
+
 	//L'idée actuelle est de prendre 3/4 blocs à une certaine distance de la position de la caméra vers là où regarder la souris
 	//pour chachun de ses blocs on va faire un check de si il y a un block ou non à cet emplacement et dans les blocs voisins (3x3)
 	//puis si il y a un block on va faire un check de collisions entre la demidroite lancée dans la direction du regard et le bloc
@@ -160,7 +162,7 @@ void BlockSelector::SelectBlock(Block** selectedBlock, Vector2I* selectedBlockCh
 	//on trouvera ainsi un certain nombre de collisions et on gardera celle qui a lieu à la distance la plus faible du joueur
 	
 	float porteSelection = 10.f;
-	float pas = 0.2f;
+	float pas = 0.1f;
 	int nbZonesTestes = porteSelection/pas; //la valeur numérique
 	
 	//float currentBestDitance = FLT_MAX;
@@ -168,7 +170,7 @@ void BlockSelector::SelectBlock(Block** selectedBlock, Vector2I* selectedBlockCh
 	//TODO : utiliser un set pour vérifier qu'on check pas plusieurs fois les collisions d'un même block
 	for (int i = 0; i < nbZonesTestes; i++)
 	{
-		glm::vec3 zoneTestActuelle = cameraPos + glm::vec3(cameraFront.x*i*pas, cameraFront.y*i*pas, cameraFront.z*i*pas);
+		glm::vec3 zoneTestActuelle = coordonneesJoueur + glm::vec3(cameraFront.x*i*pas, cameraFront.y*i*pas, cameraFront.z*i*pas);
 
 		Vector2I blockChunk;
 		Vector3I blockPosition;
@@ -178,7 +180,7 @@ void BlockSelector::SelectBlock(Block** selectedBlock, Vector2I* selectedBlockCh
 		{
 			*selectedBlock = block;
 			*selectedBlockChunkPosition = blockChunk;
-			this->FindCollisionFace(faceDirection,block,blockChunk,cameraPos,cameraFront);
+			this->FindCollisionFace(faceDirection,block,blockChunk, coordonneesJoueur,cameraFront);
 			return;
 		}
 

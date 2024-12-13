@@ -170,25 +170,25 @@ void GraphicManager::Load(MaFenetre* fenetre)
         //+,+
         //-,+
 
-         -0.1f, -0.05f,   //rectangle gauche
-         -0.05f, -0.05f,
-         -0.05f, 0.05f,
-         -0.1f,  0.05f,
+         -0.115f, -0.01f,   //rectangle gauche
+         -0.04f, -0.01f,
+         -0.04f, 0.01f,
+         -0.115f,  0.01f,
 
-         -0.05f, -0.1f,   //rectangle haut
-         0.05f, -0.1f,
-         0.05f, -0.05f,
-         -0.05f, -0.05f,
+         -0.008f, -0.14f,   //rectangle bas
+         0.008f, -0.14f,
+         0.008f, -0.05f,
+         -0.008f, -0.05f,
 
-         0.05f, -0.05f, //rectangle droit
-         0.1f,  -0.05f,
-         0.1f,  0.05f,
-         0.05f, 0.05f,
+         0.04f, -0.01f, //rectangle droit
+         0.115f,  -0.01f,
+         0.115f,  0.01f,
+         0.04f, 0.01f,
 
-         -0.05f, 0.05f, //rectangle bas
-         0.05f,  0.05f,
-         0.05f,  0.1f,
-         -0.05f,  0.1f
+         -0.008f, 0.05f, //rectangle haut
+         0.008f,  0.05f,
+         0.008f,  0.14f,
+         -0.008f,  0.14f
     };
     
     unsigned int indicesViseur[] = {

@@ -215,7 +215,7 @@ void MaFenetre::upadateChunks()
 
 void MaFenetre::selectBlock()
 {
-    blockSelector->SelectBlock(&highlightedBlock, &highlightedBlockChunkPosition, &highlightedFace, chunkManager, cameraPos, cameraFront);
+    blockSelector->SelectBlock(&highlightedBlock, &highlightedBlockChunkPosition, &highlightedFace, chunkManager, cameraPos , cameraFront);
 }
 
 void MaFenetre::setDeltaTime(float delta)

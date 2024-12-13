@@ -119,13 +119,14 @@ void ChunkManager::GenerateChunk(const Vector2I& coordonneesChunk)
 
 bool ChunkManager::isPositionAllowed(const glm::vec3& coordonneesJoueur)
 {
+	glm::vec3 coordonneesReel = coordonneesJoueur + glm::vec3(0.5f, 0.5f, 0.5f);
 	//Paramétrage de la taille du joueur ainsi que de la hauteur de ses yeux
 	float joueurTailleX = 0.8f;
 	float joueurTailleY = 2.5f;
 	float joueurTailleZ = 0.8f;
 	float ratioHauteurYeux = 0.95f;
-	glm::vec3 playerMins(coordonneesJoueur.x - (joueurTailleX/2.f), coordonneesJoueur.y - (joueurTailleX * ratioHauteurYeux), coordonneesJoueur.z - (joueurTailleZ / 2.f));
-	glm::vec3 playerMaxs(coordonneesJoueur.x + (joueurTailleX / 2.f), coordonneesJoueur.y + (joueurTailleX * (1-ratioHauteurYeux)), coordonneesJoueur.z + (joueurTailleZ / 2.f));
+	glm::vec3 playerMins(coordonneesReel.x - (joueurTailleX/2.f), coordonneesReel.y - (joueurTailleX * ratioHauteurYeux), coordonneesReel.z - (joueurTailleZ / 2.f));
+	glm::vec3 playerMaxs(coordonneesReel.x + (joueurTailleX / 2.f), coordonneesReel.y + (joueurTailleX * (1-ratioHauteurYeux)), coordonneesReel.z + (joueurTailleZ / 2.f));
 
 	//boucle for qui va parcourir les blocs proches du joueur (en 3*4*3 pour le moment) puis qui va check si il y a collision entre le joueur et chacun des blocs en mode aabb
 	for (int deltaX = -1; deltaX <= 1; deltaX++)
@@ -136,7 +137,7 @@ bool ChunkManager::isPositionAllowed(const glm::vec3& coordonneesJoueur)
 			{
 				Vector2I cooChunkActuel;
 				Vector3I cooBlockActuel;
-				if (findBlock(coordonneesJoueur + glm::vec3(deltaX, deltaY, deltaZ), &cooChunkActuel, &cooBlockActuel, nullptr))
+				if (findBlock(coordonneesReel + glm::vec3(deltaX, deltaY, deltaZ), &cooChunkActuel, &cooBlockActuel, nullptr))
 				{
 					glm::vec3 blockMins(cooBlockActuel.getX()+cooChunkActuel.getX()*16, cooBlockActuel.getY(), cooBlockActuel.getZ() + (cooChunkActuel.getZ() * 16));
 					glm::vec3 blockMaxs(blockMins.x+1,blockMins.y+1,blockMins.z+1);
