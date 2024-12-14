@@ -9,9 +9,9 @@
 
 
 //Classe qui manage la partie Graphique de l'application
-//Elle prend en entrée une fenetre ainsi que l'ensemble des blocks et va dessiner les blocks sur la fenetre
+//Elle prend en entree une fenetre ainsi que l'ensemble des blocks et va dessiner les blocks sur la fenetre
 
-// !!!!!Il n'est supposEavoir qu'une seule instance de cette classe!!!!!
+// !!!!!Il n'est suppose avoir qu'une seule instance de cette classe!!!!!
 class GraphicManager
 {
 private:
@@ -37,11 +37,12 @@ private:
 	void HighlightBlock(Block* block, const Vector2I& chunkPosition);
 
 	void DrawViseur();
+	void DrawHotbar();
 public:
 	GraphicManager();
 	~GraphicManager();
 
-	//Charge les données géométriques d'un cube (VAO/VBO)
+	//Charge les donnees geometriques d'un cube (VAO/VBO)
 	void Load(MaFenetre* fenetre);
 	//Dessine l'ensemble des blocks contenus dans le chunkManager dans la fenetre
 	void Draw(MaFenetre* fenetre);

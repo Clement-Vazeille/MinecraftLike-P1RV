@@ -62,6 +62,13 @@ void GraphicManager::DrawViseur()
     glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, nullptr);
 }
 
+void GraphicManager::DrawHotbar()
+{
+    textureManager.BindTexture("Assets/Block/birch_log.png");
+    textureManager.BindTexture("Assets/HUD/hotbar.png");
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+}
+
 GraphicManager::GraphicManager() : ourShader("src/Graphic/Shader/shader.vs", "src/Graphic/Shader/shader.fs"),
     selectionShader("src/Graphic/Shader/shaderSelection.vs","src/Graphic/Shader/shaderSelection.fs"),
     viseurShader("src/Graphic/Shader/shaderViseur.vs", "src/Graphic/Shader/shaderViseur.fs"),
@@ -81,6 +88,9 @@ GraphicManager::~GraphicManager()
     glDeleteVertexArrays(1, &VAOviseur);
     glDeleteBuffers(1, &VBOviseur);
     glDeleteBuffers(1, &EBOviseur);
+    glDeleteVertexArrays(1, &VAOhotbar);
+    glDeleteBuffers(1, &VBOhotbar);
+    glDeleteBuffers(1, &EBOhotbar);
 }
 
 void GraphicManager::Load(MaFenetre* fenetre)
@@ -236,16 +246,35 @@ void GraphicManager::Load(MaFenetre* fenetre)
         //+,+
         //-,+
 
-         -0.115f, -0.01f, 0.0f, 0.0f,    //à changer
-         -0.04f, -0.01f, 1.0f, 0.0f,
-         -0.04f, 0.01f, 1.0f, 1.0f,
-         -0.115f,  0.01f, 0.0f, 1.0f,
+         -0.55f, -1.0f, 0.0f, 0.0f,    
+         0.55f, -1.0f, 1.0f, 0.0f,
+         0.55f, -0.84f, 1.0f, 1.0f, 
+         -0.55f,  -0.84f, 0.0f, 1.0f,
     };
 
     unsigned int indicesHotbar[] = {
     0, 1, 2, // bottom triangle
     2, 3, 0,  // top triangle
     };
+
+    glGenVertexArrays(1, &VAOhotbar);
+    glGenBuffers(1, &VBOhotbar);
+    glGenBuffers(1, &EBOhotbar);
+
+    glBindVertexArray(VAOhotbar);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBOhotbar);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOhotbar);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(verticesHotbar), verticesHotbar, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicesHotbar), indicesHotbar, GL_STATIC_DRAW);
+
+    // position attribute
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // texture coord attribute
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     glEnable(GL_CULL_FACE);
 }
@@ -281,11 +310,15 @@ void GraphicManager::Draw(MaFenetre* fenetre)
     this->HighlightBlock(fenetre->getHighlightedBlock(), fenetre->getHighlightedBlockChunkPosition());
 
     
-
     //On dessine le viseur
     glBindVertexArray(VAOviseur);
     viseurShader.use();
     this->DrawViseur();
+
+    //On dessine la hotbar
+    glBindVertexArray(VAOhotbar);
+    hotbarShader.use();
+    this->DrawHotbar();
 
     //On swap les buffers glfw et on poll les events d'input output
     glfwSwapBuffers(fenetre->getWindow());
