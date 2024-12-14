@@ -32,7 +32,7 @@ MaFenetre::MaFenetre()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    mWindow = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "MineCraft-Like", NULL, NULL);
+    mWindow = glfwCreateWindow(scrWidth, scrHeight, "MineCraft-Like", NULL, NULL);
     glfwSetWindowUserPointer(mWindow, this);
 
     if (mWindow == NULL)
@@ -59,7 +59,9 @@ MaFenetre::~MaFenetre()
 
 void MaFenetre::framebuffer_size_callback(int width, int height)
 {
-    //On s'assure que le viewport corresponde aux dimensions de la fenêtre
+    //On s'assure que le viewport corresponde aux dimensions de la fenetre
+    scrWidth = width;
+    scrHeight = height;
     glViewport(0, 0, width, height);
 }
 
@@ -76,18 +78,18 @@ void MaFenetre::mouse_callback(double xposIn, double yposIn)
     }
 
     float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // inversEcar les coordonnées y vont de bas en haut
+    float yoffset = lastY - ypos; // inverse car les coordonnees y vont de bas en haut
     lastX = xpos;
     lastY = ypos;
 
-    float sensitivity = 0.1f; // sensibilitEdu déplacement
+    float sensitivity = 0.1f; // sensibilite du deplacement
     xoffset *= sensitivity;
     yoffset *= sensitivity;
 
     yaw += xoffset;
     pitch += yoffset;
 
-    // on s'assure que le pitch ne dépasse pas la limite possible
+    // on s'assure que le pitch ne depasse pas la limite possible
     if (pitch > 89.0f)
         pitch = 89.0f;
     if (pitch < -89.0f)
@@ -131,9 +133,9 @@ void MaFenetre::processMovements()
         cameraSpeed *= 2.5;
 
 
-    //Traitement déplacements
+    //Traitement deplacements
     glm::vec3 movement = glm::vec3(0,0,0);
-    if (movementModeVol) //déplacement en mode vol
+    if (movementModeVol) //deplacement en mode vol
     {
         if (glfwGetKey(mWindow, GLFW_KEY_W) == GLFW_PRESS)
             movement += cameraSpeed * cameraFront;
@@ -153,7 +155,7 @@ void MaFenetre::processMovements()
     
     if (!movementModeVol)
     {
-        //déplacement en mode au sol
+        //deplacement en mode au sol
         glm::vec3 frontMove = glm::vec3(cameraFront.x, 0.f, cameraFront.z);
         glm::vec3 rightMove = glm::vec3(glm::cross(cameraFront, cameraUp).x, 0.f, glm::cross(cameraFront, cameraUp).z);
         if (glfwGetKey(mWindow, GLFW_KEY_W) == GLFW_PRESS)
@@ -202,8 +204,8 @@ void MaFenetre::processClicks()
     if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && highlightedBlock != nullptr)
     {
         chunkManager->DestroyBlock(highlightedBlockChunkPosition, highlightedBlock->getPosition());
-        this->selectBlock(); //On sélectionne un nouveau block pour toujours avoir un block affiché comme sélectionné, en pratique on pourra rien faire se ce block lors de cette frame
-        //Permet aussi de faire que le pointeur vers le block sélectionné ne pointe plus sur le block supprimé
+        this->selectBlock(); //On selectionne un nouveau block pour toujours avoir un block affiche comme selectionne en pratique on pourra rien faire sur ce block lors de cette frame
+        //Permet aussi de faire que le pointeur vers le block selectionne ne pointe plus sur le block supprime
     }
 }
 
@@ -260,12 +262,12 @@ float MaFenetre::getfov(void) const
 
 unsigned int MaFenetre::getSCR_WIDTH(void) const
 {
-    return SCR_WIDTH;
+    return scrWidth;
 }
 
 unsigned int MaFenetre::getSCR_HEIGHT(void) const
 {
-    return SCR_HEIGHT;
+    return scrHeight;
 }
 
 ChunkManager* MaFenetre::getChunkManager(void)

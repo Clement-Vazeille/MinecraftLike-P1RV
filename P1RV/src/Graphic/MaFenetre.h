@@ -2,18 +2,18 @@
 #include "../IncludeLibrairies.h"
 #include "../Game/Block/ChunkManager.h"
 #include "../Game/BlockSelector.h"
-//Class qui contient la fenÍtre de l'application ainsi que l'ensemble des variables dÈcrivants les Ètats gÈnÈraux de l'application
+//Class qui contient la fenetre de l'application ainsi que l'ensemble des variables decrivants les etats generaux de l'application
 //Elle contient aussi les fonctions de callback de l'application
 
 //!!!! Il ne peux y avoir qu'un objet de type MaFenetre!!!!!!!
-//On pourrait changer Áa mais on n'y voit pas trop d'intÈrets
+//On pourrait changer ca mais on n'y voit pas trop d'interets
 class MaFenetre
 {
 private:
     GLFWwindow* mWindow;
 
-    const unsigned int SCR_WIDTH = 800;
-    const unsigned int SCR_HEIGHT = 600;
+    unsigned int scrWidth = 800;
+    unsigned int scrHeight = 600;
 
     // camera
     glm::vec3 cameraPos = glm::vec3(8.0f, 6.0f, 8.0f);
@@ -21,29 +21,29 @@ private:
     glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
     bool firstMouse = true;
-    float yaw = -90.0f;	// yaw est initialisÅEÅE-90.0 degrÈs car un yaw ÅE0.0 pointerait vers la gauche
+    float yaw = -90.0f;	// yaw est initialise a -90.0 degres car un yaw a 0.0 pointerait vers la gauche
     float pitch = 0.0f;
     float lastX = 800.0f / 2.0;
     float lastY = 600.0 / 2.0;
     float fov = 45.0f;
 
     // timing
-    float deltaTime = 0.0f;	// temps ÈcoulÅEentre la derniËre frame et la frame actuelle
-    float lastFrame = 0.0f; //timestamp de la derniËre frame
+    float deltaTime = 0.0f;	// temps ecoule entre la derniere frame et la frame actuelle
+    float lastFrame = 0.0f; //timestamp de la derniere frame
 
     ChunkManager* chunkManager;
     BlockSelector* blockSelector;
 
-    bool movementModeVol = false; //true si on se dÈplace en volant false si on marche
+    bool movementModeVol = false; //true si on se deplace en volant false si on marche
     bool toucheLeSol = false;
     float yUpForce = 0;
-    //on utilise la touche m pour changer le mode de dÈplacement
+    //on utilise la touche m pour changer le mode de deplacement
 
     Block* highlightedBlock = nullptr;
     Vector2I highlightedBlockChunkPosition;
     Vector3I highlightedFace;
 
-    //Fonctions de callback statics donnÈes ÅEOpenGL, leur rÙle est d'appeler les fonctions de callback de la classe dÈfinies plus bas 
+    //Fonctions de callback statics donnees a OpenGL, leur role est d'appeler les fonctions de callback de la classe definies plus bas 
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
     static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
     static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -65,10 +65,10 @@ public:
     //Process des inputs de la souris
     void processClicks();
 
-    //Charge et gÈnËre les chunks proches, puis dÈcharge les chunks ÈloignÈs
+    //Charge et genere les chunks proches, puis decharge les chunks eloigne
     void upadateChunks();
 
-    //SÈlectionne le block pointÈ par le joueur
+    //Selectionne le block pointe par le joueur
     void selectBlock();
 
     //setters
