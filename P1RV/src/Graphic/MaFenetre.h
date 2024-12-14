@@ -43,6 +43,8 @@ private:
     Vector2I highlightedBlockChunkPosition;
     Vector3I highlightedFace;
 
+    int hotbarActiveSlot = 0; //valeur entre 0 et 9
+
     //Fonctions de callback statics donnees a OpenGL, leur role est d'appeler les fonctions de callback de la classe definies plus bas 
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
     static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -64,6 +66,9 @@ public:
 
     //Process des inputs de la souris
     void processClicks();
+
+    //Process du choix du slot de hotbar
+    void processHotbarSelection();
 
     //Charge et genere les chunks proches, puis decharge les chunks eloigne
     void upadateChunks();
@@ -87,5 +92,6 @@ public:
     ChunkManager* getChunkManager(void);
     Block* getHighlightedBlock(void) const;
     Vector2I getHighlightedBlockChunkPosition(void) const;
+    int getHotbarActiveSlot(void) const;
 };
 

@@ -209,6 +209,30 @@ void MaFenetre::processClicks()
     }
 }
 
+void MaFenetre::processHotbarSelection()
+{
+    if (glfwGetKey(mWindow, GLFW_KEY_1) == GLFW_PRESS)
+        hotbarActiveSlot=0;
+    if (glfwGetKey(mWindow, GLFW_KEY_2) == GLFW_PRESS)
+        hotbarActiveSlot = 1;
+    if (glfwGetKey(mWindow, GLFW_KEY_3) == GLFW_PRESS)
+        hotbarActiveSlot = 2;
+    if (glfwGetKey(mWindow, GLFW_KEY_4) == GLFW_PRESS)
+        hotbarActiveSlot = 3;
+    if (glfwGetKey(mWindow, GLFW_KEY_5) == GLFW_PRESS)
+        hotbarActiveSlot = 4;
+    if (glfwGetKey(mWindow, GLFW_KEY_6) == GLFW_PRESS)
+        hotbarActiveSlot = 5;
+    if (glfwGetKey(mWindow, GLFW_KEY_7) == GLFW_PRESS)
+        hotbarActiveSlot = 6;
+    if (glfwGetKey(mWindow, GLFW_KEY_8) == GLFW_PRESS)
+        hotbarActiveSlot = 7;
+    if (glfwGetKey(mWindow, GLFW_KEY_9) == GLFW_PRESS)
+        hotbarActiveSlot = 8;
+    if (glfwGetKey(mWindow, GLFW_KEY_0) == GLFW_PRESS)
+        hotbarActiveSlot = 9;
+}
+
 void MaFenetre::upadateChunks()
 {
     chunkManager->LoadChunks(cameraPos);
@@ -283,4 +307,9 @@ Block* MaFenetre::getHighlightedBlock(void) const
 Vector2I MaFenetre::getHighlightedBlockChunkPosition(void) const
 {
     return highlightedBlockChunkPosition;
+}
+
+int MaFenetre::getHotbarActiveSlot(void) const
+{
+    return hotbarActiveSlot;
 }

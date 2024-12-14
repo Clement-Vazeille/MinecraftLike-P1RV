@@ -298,10 +298,10 @@ void GraphicManager::Load(MaFenetre* fenetre)
         //+,+
         //-,+
 
-        -0.105f, -0.99f,
+        -0.106f, -0.99f,
          0.0f, -0.99f,
          0.0f, -0.85f,
-         -0.105f,  -0.85f
+         -0.106f,  -0.85f
     };
 
     unsigned int indicesHotbarSelection[] = {
@@ -366,6 +366,9 @@ void GraphicManager::Draw(MaFenetre* fenetre)
     //On dessine la selection de la hotbar
     glBindVertexArray(VAOhotbarSelector);
     hotbarSelectionShader.use();
+    glm::mat4 translation = glm::mat4(1.0f);
+    translation = glm::translate(translation, glm::vec3(0.106f*(-4+fenetre->getHotbarActiveSlot()), 0, 0));
+    hotbarSelectionShader.setMat4("translation", translation);
     this->DrawHotbarSelection();
 
     //On dessine la hotbar
