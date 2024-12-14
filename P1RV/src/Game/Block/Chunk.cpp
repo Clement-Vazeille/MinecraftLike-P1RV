@@ -22,18 +22,21 @@ Chunk::Chunk(const Vector2I& v) : Chunk(v.getX(),v.getZ())
 
 void Chunk::AddBlock(Block* b)
 {
-	Vector3I blockPosition = b->getPosition();
-
-	//check if the bloc is in the chunk
-	if (blockPosition.getX() < 0 || blockPosition.getX() >= sizeX ||
-		blockPosition.getY() < 0 || blockPosition.getY() >= sizeY ||
-		blockPosition.getZ() < 0 || blockPosition.getZ() >= sizeZ
-		)
+	if (b != nullptr)
 	{
-		cout << "Le jeu a essaye d'ajouter un bloc a un chunk en dehors de ce chunk" << endl;
-		return;
+		Vector3I blockPosition = b->getPosition();
+
+		//check if the bloc is in the chunk
+		if (blockPosition.getX() < 0 || blockPosition.getX() >= sizeX ||
+			blockPosition.getY() < 0 || blockPosition.getY() >= sizeY ||
+			blockPosition.getZ() < 0 || blockPosition.getZ() >= sizeZ
+			)
+		{
+			cout << "Le jeu a essaye d'ajouter un bloc a un chunk en dehors de ce chunk" << endl;
+			return;
+		}
+		blocks.insert(make_pair(blockPosition, b));
 	}
-	blocks.insert(make_pair(blockPosition,b));
 }
 
 void Chunk::DestroyBlock(const Vector3I& coordBlock)

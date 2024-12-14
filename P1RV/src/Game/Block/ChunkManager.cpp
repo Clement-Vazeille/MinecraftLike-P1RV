@@ -2,6 +2,9 @@
 #include <iostream>
 #include <algorithm>
 #include "SpecificBlocks/GrassBlock.h"
+#include "SpecificBlocks/GrassBlockSnow.h"
+#include "SpecificBlocks/CraftingTable.h"
+#include "SpecificBlocks/BirchWood.h"
 
 int ChunkManager::DistanceChunks(const Vector2I& coordonnesChunk1, const Vector2I& coordonnesChunk2)
 {
@@ -46,15 +49,24 @@ unordered_set<Chunk*>* ChunkManager::GetActiveChunks()
 	return &activeChunks;
 }
 
-void ChunkManager::AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlock, const glm::vec3& coordonneesJoueur)
+void ChunkManager::AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlock, const glm::vec3& coordonneesJoueur,int IDblock)
 {
 	Vector2I coordChunkCopie(coordChunk);
 	Vector3I coordBlockCopie(coordBlock);
 	RecentrerChunkPosition(coordChunkCopie, coordBlockCopie);
 	if (chunks.count(coordChunkCopie)) //test d' existence du chunk
 	{
-		GrassBlock* grassBlock = new GrassBlock(coordBlockCopie);
-		chunks.at(coordChunkCopie)->AddBlock(grassBlock);
+		Block* blockCree = nullptr;
+		if(IDblock == 0)
+			blockCree = new GrassBlock(coordBlockCopie);
+		if (IDblock == 1)
+			blockCree = new GrassBlockSnow(coordBlockCopie);
+		if (IDblock == 2)
+			blockCree = new CraftingTable(coordBlockCopie);
+		if (IDblock == 3)
+			blockCree = new BirchWood(coordBlockCopie);
+
+		chunks.at(coordChunkCopie)->AddBlock(blockCree);
 		if (!this->isPositionAllowed(coordonneesJoueur))
 			this->DestroyBlock(coordChunkCopie, coordBlockCopie);
 	}

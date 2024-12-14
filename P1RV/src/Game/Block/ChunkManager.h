@@ -25,7 +25,7 @@ public:
 
 	//Fonction de creation/destruction de blocks appelees lors d'un click de l'utilisateur
 	//La fonction addBlock prend en entree les coordonnees du joueur pour verifier que le joueur n'est pas positionne sur le bloc qui est place
-	void AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlock, const glm::vec3& coordonneesJoueur);
+	void AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlock, const glm::vec3& coordonneesJoueur,int idBlock);
 	void DestroyBlock(const Vector2I& coordChunk, const Vector3I& coordBlock);
 
 	//fonction qui va charger et genere si besoin les chunks a proximite du joueur

@@ -200,7 +200,7 @@ void MaFenetre::processMovements()
 void MaFenetre::processClicks()
 {
     if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS && highlightedBlock!=nullptr)
-        chunkManager->AddBlock(highlightedBlockChunkPosition, highlightedBlock->getPosition() + highlightedFace,cameraPos);
+        chunkManager->AddBlock(highlightedBlockChunkPosition, highlightedBlock->getPosition() + highlightedFace,cameraPos,hotbarActiveSlot);
     if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && highlightedBlock != nullptr)
     {
         chunkManager->DestroyBlock(highlightedBlockChunkPosition, highlightedBlock->getPosition());
