@@ -70,12 +70,12 @@ void ChunkManager::DestroyBlock(const Vector2I& coordChunk, const Vector3I& coor
 
 void ChunkManager::LoadChunks(const glm::vec3& coordonneesJoueur)
 {
-	//on va tenter de charger tout les chunks à 3/4 chunks de distance
+	//on va tenter de charger tout les chunks a 3/4 chunks de distance
 	Vector2I chunkjoueur(coordonneesJoueur);
 
 	int distanceChargement = renderDistance;
 	
-	//On se déplace sur l'ensemble des blocs qui sont au plus à une distance "distanceChargement" du joueur
+	//On se deplace sur l'ensemble des blocs qui sont au plus a une distance "distanceChargement" du joueur
 	for(int i = -distanceChargement;i<=distanceChargement;i++)
 	{
 		for (int j = -distanceChargement + abs(i); j <= distanceChargement - abs(i); j++)
@@ -111,7 +111,7 @@ void ChunkManager::GenerateChunk(const Vector2I& coordonneesChunk)
 			chunk->FillBottomWithGrass();
 		this->AddChunk(chunk);
 	}
-	else {  //Si le chunk est deja généré mais n'est pas chargé, on le charge
+	else {  //Si le chunk est deja genere mais n'est pas charge on le charge
 		if (!activeChunks.count(chunks.at(coordonneesChunk)))
 			activeChunks.insert(chunks.at(coordonneesChunk));
 	}
@@ -120,7 +120,7 @@ void ChunkManager::GenerateChunk(const Vector2I& coordonneesChunk)
 bool ChunkManager::isPositionAllowed(const glm::vec3& coordonneesJoueur)
 {
 	glm::vec3 coordonneesReel = coordonneesJoueur + glm::vec3(0.5f, 0.5f, 0.5f);
-	//Paramétrage de la taille du joueur ainsi que de la hauteur de ses yeux
+	//Parametrage de la taille du joueur ainsi que de la hauteur de ses yeux
 	float joueurTailleX = 0.25f;
 	float joueurTailleY = 1.6f;
 	float joueurTailleZ = 0.25f;
@@ -174,9 +174,9 @@ bool ChunkManager::findBlock(const glm::vec3& coordonnees, Vector2I* sortieCoord
 	if (coordonnees.z < 0)
 		blocktrouve.setZ(blocktrouve.getZ() + 15);
 
-	if (chunks.count(chunktrouve)) //Test de si il y a un chunk ou non à l'emplacement
+	if (chunks.count(chunktrouve)) //Test de si il y a un chunk ou non a l'emplacement
 	{
-		if (chunks[chunktrouve]->GetBlocks()->count(blocktrouve)) //Test de si il y a un bloc ou non à l'emplacement
+		if (chunks[chunktrouve]->GetBlocks()->count(blocktrouve)) //Test de si il y a un bloc ou non a l'emplacement
 		{
 			if(sortieCoordChunk!=nullptr)
 				*sortieCoordChunk = chunktrouve;

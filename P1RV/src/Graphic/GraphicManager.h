@@ -38,6 +38,7 @@ private:
 
 	void DrawViseur();
 	void DrawHotbar();
+	void DrawHotbarSelection();
 public:
 	GraphicManager();
 	~GraphicManager();

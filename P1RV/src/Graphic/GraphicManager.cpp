@@ -64,9 +64,19 @@ void GraphicManager::DrawViseur()
 
 void GraphicManager::DrawHotbar()
 {
-    textureManager.BindTexture("Assets/Block/birch_log.png");
     textureManager.BindTexture("Assets/HUD/hotbar.png");
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+}
+
+void GraphicManager::DrawHotbarSelection()
+{
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glLineWidth(5);
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+    glLineWidth(1);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 GraphicManager::GraphicManager() : ourShader("src/Graphic/Shader/shader.vs", "src/Graphic/Shader/shader.fs"),
@@ -91,6 +101,9 @@ GraphicManager::~GraphicManager()
     glDeleteVertexArrays(1, &VAOhotbar);
     glDeleteBuffers(1, &VBOhotbar);
     glDeleteBuffers(1, &EBOhotbar);
+    glDeleteVertexArrays(1, &VAOhotbarSelector);
+    glDeleteBuffers(1, &VAOhotbarSelector);
+    glDeleteBuffers(1, &VAOhotbarSelector);
 }
 
 void GraphicManager::Load(MaFenetre* fenetre)
@@ -249,7 +262,7 @@ void GraphicManager::Load(MaFenetre* fenetre)
          -0.55f, -1.0f, 0.0f, 0.0f,    
          0.55f, -1.0f, 1.0f, 0.0f,
          0.55f, -0.84f, 1.0f, 1.0f, 
-         -0.55f,  -0.84f, 0.0f, 1.0f,
+         -0.55f,  -0.84f, 0.0f, 1.0f
     };
 
     unsigned int indicesHotbar[] = {
@@ -276,6 +289,42 @@ void GraphicManager::Load(MaFenetre* fenetre)
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
+    // initialisation des sommets de la selection hotbar
+    // ------------------------------------------------------------------
+    float verticesHotbarSelection[] = { //position vis à vis du spawn
+        //Format : 
+        //-,-
+        //+,-
+        //+,+
+        //-,+
+
+        -0.105f, -0.99f,
+         0.0f, -0.99f,
+         0.0f, -0.85f,
+         -0.105f,  -0.85f
+    };
+
+    unsigned int indicesHotbarSelection[] = {
+    0, 1, 2, // bottom triangle
+    2, 3, 0,  // top triangle
+    };
+
+    glGenVertexArrays(1, &VAOhotbarSelector);
+    glGenBuffers(1, &VBOhotbarSelector);
+    glGenBuffers(1, &EBOhotbarSelector);
+
+    glBindVertexArray(VAOhotbarSelector);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBOhotbarSelector);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOhotbarSelector);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(verticesHotbarSelection), verticesHotbarSelection, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicesHotbarSelection), indicesHotbarSelection, GL_STATIC_DRAW);
+
+    // position attribute
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
     glEnable(GL_CULL_FACE);
 }
 
@@ -285,20 +334,19 @@ void GraphicManager::Draw(MaFenetre* fenetre)
     glClearColor(135.f / 255.f, 206.f / 255.f, 235.f / 255.f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glm::mat4 projection = glm::perspective(glm::radians(fenetre->getfov()), (float)fenetre->getSCR_WIDTH() / (float)fenetre->getSCR_HEIGHT(), 0.1f, 100.0f);
+    glm::mat4 view = glm::lookAt(fenetre->getcameraPos(), fenetre->getcameraPos() + fenetre->getcameraFront(), fenetre->getcameraUp());
+    //On assigne le VAO des cubes
+    glBindVertexArray(VAOblock);
     
     //activation des shaders
     ourShader.use();
 
     //Transmission de la matrice de projection du monde aux shaders
-    glm::mat4 projection = glm::perspective(glm::radians(fenetre->getfov()), (float)fenetre->getSCR_WIDTH() / (float)fenetre->getSCR_HEIGHT(), 0.1f, 100.0f);
     ourShader.setMat4("projection", projection);
-
     //Transmission de la matrice de vue de la caméra aux shaders
-    glm::mat4 view = glm::lookAt(fenetre->getcameraPos(), fenetre->getcameraPos() + fenetre->getcameraFront(), fenetre->getcameraUp());
     ourShader.setMat4("view", view);
 
-    //On assigne le VAO des cubes
-    glBindVertexArray(VAOblock);
    
     //On dessine le monde
     this->DrawChunkManager(fenetre->getChunkManager());
@@ -315,10 +363,16 @@ void GraphicManager::Draw(MaFenetre* fenetre)
     viseurShader.use();
     this->DrawViseur();
 
+    //On dessine la selection de la hotbar
+    glBindVertexArray(VAOhotbarSelector);
+    hotbarSelectionShader.use();
+    this->DrawHotbarSelection();
+
     //On dessine la hotbar
     glBindVertexArray(VAOhotbar);
     hotbarShader.use();
     this->DrawHotbar();
+
 
     //On swap les buffers glfw et on poll les events d'input output
     glfwSwapBuffers(fenetre->getWindow());
