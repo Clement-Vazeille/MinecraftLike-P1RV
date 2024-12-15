@@ -5,6 +5,7 @@
 
 #include "../Game/Block/Chunk.h"
 #include "../Game/Block/ChunkManager.h"
+#include "../Game/HotBar.h"
 #include "MaFenetre.h"
 
 
@@ -37,8 +38,11 @@ private:
 	void HighlightBlock(Block* block, const Vector2I& chunkPosition);
 
 	void DrawViseur();
+
 	void DrawHotbar();
 	void DrawHotbarSelection();
+	void DrawHotbarBlocks(HotBar* hotbar);
+
 public:
 	GraphicManager();
 	~GraphicManager();

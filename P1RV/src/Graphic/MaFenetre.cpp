@@ -49,6 +49,8 @@ MaFenetre::MaFenetre()
 
     chunkManager = new ChunkManager();
     blockSelector = new BlockSelector();
+    hotbar = new HotBar;
+    hotbar->initialise();
 }
 
 MaFenetre::~MaFenetre()
@@ -312,4 +314,9 @@ Vector2I MaFenetre::getHighlightedBlockChunkPosition(void) const
 int MaFenetre::getHotbarActiveSlot(void) const
 {
     return hotbarActiveSlot;
+}
+
+HotBar* MaFenetre::getHotBar(void) const
+{
+    return hotbar;
 }

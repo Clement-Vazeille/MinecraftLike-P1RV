@@ -79,6 +79,36 @@ void GraphicManager::DrawHotbarSelection()
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
+void GraphicManager::DrawHotbarBlocks(HotBar* hotbar)
+{
+
+    glm::mat4 transformation = glm::mat4(1.0f);
+    transformation = glm::translate(transformation, glm::vec3(0,0,-3.f));
+    transformation = glm::scale(transformation, glm::vec3(0.09f, 0.09f, 0.09f));
+    transformation = glm::rotate(transformation, glm::radians(45.0f), glm::vec3(1, 0, 0));
+    transformation = glm::rotate(transformation, glm::radians(35.264f), glm::vec3(0, 1, 0)); //rotation correspond a repere classique -> repere isometrique
+    hotbarBlockShader.setMat4("transformation", transformation);
+    
+    array<Block*, 10>* blocks = hotbar->getBlocks();
+    for (int i = 0; i < blocks->size(); i++)
+    {
+        if (blocks->at(i) != nullptr)
+        {
+            glm::mat4 translation = glm::mat4(1.0f);
+            translation = glm::translate(translation, glm::vec3(-0.475f +(i*0.105f), -0.92f, 0));
+            hotbarBlockShader.setMat4("translation", translation);
+
+            Block* block = new Block;
+            //On assigne à chaque face sa texture correspondante
+            for (int j = 0; j < 6; j++)
+            {
+                textureManager.BindTexture(blocks->at(i)->getTexturei(j));
+                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(j * 6 * sizeof(int)));
+            }
+        }
+    }
+}
+
 GraphicManager::GraphicManager() : ourShader("src/Graphic/Shader/shader.vs", "src/Graphic/Shader/shader.fs"),
     selectionShader("src/Graphic/Shader/shaderSelection.vs","src/Graphic/Shader/shaderSelection.fs"),
     viseurShader("src/Graphic/Shader/shaderViseur.vs", "src/Graphic/Shader/shaderViseur.fs"),
@@ -111,7 +141,7 @@ void GraphicManager::Load(MaFenetre* fenetre)
     
     // configuration globale des états d'openGL
     // -----------------------------
-    glEnable(GL_DEPTH_TEST);
+    
 
     // initialisation des sommets d'un cube
     // ------------------------------------------------------------------
@@ -298,8 +328,8 @@ void GraphicManager::Load(MaFenetre* fenetre)
         //+,+
         //-,+
 
-        -0.106f, -0.99f,
-         0.0f, -0.99f,
+        -0.106f, -0.992f,
+         0.0f, -0.992f,
          0.0f, -0.85f,
          -0.106f,  -0.85f
     };
@@ -330,6 +360,7 @@ void GraphicManager::Load(MaFenetre* fenetre)
 
 void GraphicManager::Draw(MaFenetre* fenetre)
 {
+    glEnable(GL_DEPTH_TEST);
     //clear du rendu précédent
     glClearColor(135.f / 255.f, 206.f / 255.f, 235.f / 255.f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -357,25 +388,31 @@ void GraphicManager::Draw(MaFenetre* fenetre)
 
     this->HighlightBlock(fenetre->getHighlightedBlock(), fenetre->getHighlightedBlockChunkPosition());
 
-    
+    glDisable(GL_DEPTH_TEST);
     //On dessine le viseur
     glBindVertexArray(VAOviseur);
     viseurShader.use();
     this->DrawViseur();
 
-    //On dessine la selection de la hotbar
-    glBindVertexArray(VAOhotbarSelector);
-    hotbarSelectionShader.use();
-    glm::mat4 translation = glm::mat4(1.0f);
-    translation = glm::translate(translation, glm::vec3(0.106f*(-4+fenetre->getHotbarActiveSlot()), 0, 0));
-    hotbarSelectionShader.setMat4("translation", translation);
-    this->DrawHotbarSelection();
-
+    
     //On dessine la hotbar
     glBindVertexArray(VAOhotbar);
     hotbarShader.use();
     this->DrawHotbar();
 
+    //On dessine la selection de la hotbar
+    glBindVertexArray(VAOhotbarSelector);
+    hotbarSelectionShader.use();
+    glm::mat4 translation = glm::mat4(1.0f);
+    translation = glm::translate(translation, glm::vec3(0.106f * (-4 + fenetre->getHotbarActiveSlot()), 0, 0));
+    hotbarSelectionShader.setMat4("translation", translation);
+    this->DrawHotbarSelection();
+
+    //On dessine les blocks de la hotbar
+    glBindVertexArray(VAOblock);
+    hotbarBlockShader.use();
+    hotbarBlockShader.setMat4("projection", projection);
+    this->DrawHotbarBlocks(fenetre->getHotBar());
 
     //On swap les buffers glfw et on poll les events d'input output
     glfwSwapBuffers(fenetre->getWindow());

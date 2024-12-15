@@ -2,6 +2,7 @@
 #include "../IncludeLibrairies.h"
 #include "../Game/Block/ChunkManager.h"
 #include "../Game/BlockSelector.h"
+#include "../Game/HotBar.h"
 //Class qui contient la fenetre de l'application ainsi que l'ensemble des variables decrivants les etats generaux de l'application
 //Elle contient aussi les fonctions de callback de l'application
 
@@ -51,6 +52,8 @@ private:
     static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
+    HotBar* hotbar;
+
 public:
     MaFenetre();
     ~MaFenetre();
@@ -93,5 +96,6 @@ public:
     Block* getHighlightedBlock(void) const;
     Vector2I getHighlightedBlockChunkPosition(void) const;
     int getHotbarActiveSlot(void) const;
+    HotBar* getHotBar(void) const;
 };
 

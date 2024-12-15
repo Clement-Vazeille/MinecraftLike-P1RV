@@ -5,5 +5,5 @@ uniform mat4 translation;
 
 void main()
 {
-	gl_Position =  translation * vec4(aPos.x,aPos.y,-0.01f,1.0f);
+	gl_Position =  translation * vec4(aPos.x,aPos.y,0.0f,1.0f);
 }
