@@ -6,7 +6,7 @@ BirchWood::BirchWood() : BirchWood(0,0,0)
 
 BirchWood::BirchWood(int i, int j, int k) : Block(i,j,k)
 {
-	textures.at(0) = "Assets/Block/birch_log.png";  //arrière
+	textures.at(0) = "Assets/Block/birch_log.png";  //arriere
 	textures.at(1) = "Assets/Block/birch_log.png"; //devant
 	textures.at(2) = "Assets/Block/birch_log.png"; //gauche
 	textures.at(3) = "Assets/Block/birch_log.png";  //droit

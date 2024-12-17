@@ -4,6 +4,12 @@
 #include "Block/SpecificBlocks/GrassBlockSnow.h"
 #include "Block/SpecificBlocks/CraftingTable.h"
 #include "Block/SpecificBlocks/BirchWood.h"
+#include "Block/SpecificBlocks/Stone.h"
+#include "Block/SpecificBlocks/Dirt.h"
+#include "Block/SpecificBlocks/Leaves.h"
+#include "Block/SpecificBlocks/OakPlank.h"
+#include "Block/SpecificBlocks/OakWood.h"
+#include "Block/SpecificBlocks/Water.h"
 
 #include <array>
 class HotBar

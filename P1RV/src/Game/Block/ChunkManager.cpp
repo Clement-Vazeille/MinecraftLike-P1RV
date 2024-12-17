@@ -5,6 +5,12 @@
 #include "SpecificBlocks/GrassBlockSnow.h"
 #include "SpecificBlocks/CraftingTable.h"
 #include "SpecificBlocks/BirchWood.h"
+#include "SpecificBlocks/Stone.h"
+#include "SpecificBlocks/Dirt.h"
+#include "SpecificBlocks/Leaves.h"
+#include "SpecificBlocks/OakPlank.h"
+#include "SpecificBlocks/OakWood.h"
+#include "SpecificBlocks/Water.h"
 
 int ChunkManager::DistanceChunks(const Vector2I& coordonnesChunk1, const Vector2I& coordonnesChunk2)
 {
@@ -65,6 +71,18 @@ void ChunkManager::AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlo
 			blockCree = new CraftingTable(coordBlockCopie);
 		if (IDblock == 3)
 			blockCree = new BirchWood(coordBlockCopie);
+		if (IDblock == 4)
+			blockCree = new OakWood(coordBlockCopie);
+		if (IDblock == 5)
+			blockCree = new OakPlank(coordBlockCopie);
+		if (IDblock == 6)
+			blockCree = new Leaves(coordBlockCopie);
+		if (IDblock == 7)
+			blockCree = new Dirt(coordBlockCopie);
+		if (IDblock == 8)
+			blockCree = new Stone(coordBlockCopie);
+		if (IDblock == 9)
+			blockCree = new Water(coordBlockCopie);
 
 		chunks.at(coordChunkCopie)->AddBlock(blockCree);
 		if (!this->isPositionAllowed(coordonneesJoueur))

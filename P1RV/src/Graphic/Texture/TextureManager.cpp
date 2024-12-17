@@ -45,6 +45,12 @@ void TextureManager::Load(Shader shader)
     LoadTexture("Assets/Block/grass_block_side.png", shader);
     LoadTexture("Assets/Block/grass_block_top.png", shader);
     LoadTexture("Assets/Block/dirt.png", shader);
+    LoadTexture("Assets/Block/oak_Side.png", shader);
+    LoadTexture("Assets/Block/oak_Top.png", shader);
+    LoadTexture("Assets/Block/stone.png", shader);
+    LoadTexture("Assets/Block/water.png", shader);
+    LoadTexture("Assets/Block/leaves.png", shader);
+    LoadTexture("Assets/Block/oak_Plank.png", shader);
     LoadTexture("Assets/Block/grass_block_snow_side.png", shader);
     LoadTexture("Assets/Block/grass_block_snow_top.png", shader);
     LoadTexture("Assets/HUD/hotbar.png", shader);
