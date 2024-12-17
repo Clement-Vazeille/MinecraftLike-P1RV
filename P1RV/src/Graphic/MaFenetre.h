@@ -54,6 +54,9 @@ private:
 
     HotBar* hotbar;
 
+    float blockInteractionCooldown = 0.085f;
+    float blockInteractionTimer = 0.f;
+
 public:
     MaFenetre();
     ~MaFenetre();

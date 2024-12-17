@@ -201,10 +201,18 @@ void MaFenetre::processMovements()
 
 void MaFenetre::processClicks()
 {
-    if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS && highlightedBlock!=nullptr)
-        chunkManager->AddBlock(highlightedBlockChunkPosition, highlightedBlock->getPosition() + highlightedFace,cameraPos,hotbarActiveSlot);
-    if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && highlightedBlock != nullptr)
+    blockInteractionTimer += deltaTime;
+    
+    if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS && highlightedBlock!=nullptr &&
+        blockInteractionTimer >= blockInteractionCooldown)
     {
+        blockInteractionTimer = 0.f;
+        chunkManager->AddBlock(highlightedBlockChunkPosition, highlightedBlock->getPosition() + highlightedFace, cameraPos, hotbarActiveSlot);
+    }
+    if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && highlightedBlock != nullptr &&
+        blockInteractionTimer >= blockInteractionCooldown)
+    {
+        blockInteractionTimer = 0.f;
         chunkManager->DestroyBlock(highlightedBlockChunkPosition, highlightedBlock->getPosition());
         this->selectBlock(); //On selectionne un nouveau block pour toujours avoir un block affiche comme selectionne en pratique on pourra rien faire sur ce block lors de cette frame
         //Permet aussi de faire que le pointeur vers le block selectionne ne pointe plus sur le block supprime
