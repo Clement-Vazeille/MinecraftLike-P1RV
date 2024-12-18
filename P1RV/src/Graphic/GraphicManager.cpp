@@ -28,7 +28,6 @@ void GraphicManager::DrawChunk(Chunk* chunk)
 
 void GraphicManager::DrawChunkManager(ChunkManager* chunkManager)
 {
-    //unordered_map<Vector2I, Chunk*, Vector2I::HashFoncteur>* chunks = chunkManager->GetActiveChunks();
     unordered_set<Chunk*>* chunks = chunkManager->GetActiveChunks();
 
     for (Chunk* chunk : *chunks)
@@ -411,6 +410,7 @@ void GraphicManager::Draw(MaFenetre* fenetre)
     //On dessine les blocks de la hotbar
     glBindVertexArray(VAOblock);
     hotbarBlockShader.use();
+    projection = glm::perspective(glm::radians(45.0f), (float)fenetre->getSCR_WIDTH() / (float)fenetre->getSCR_HEIGHT(), 0.1f, 100.0f);
     hotbarBlockShader.setMat4("projection", projection);
     this->DrawHotbarBlocks(fenetre->getHotBar());
 
