@@ -7,5 +7,7 @@ public:
     Water();
     Water(int i, int j, int k);
     Water(const Vector3I& p);
+
+    bool hasCollisions(void) const override;
 };
 

@@ -17,3 +17,8 @@ Water::Water(int i, int j, int k) : Block(i,j,k)
 Water::Water(const Vector3I& p) : Water(p.getX(),p.getY(),p.getZ())
 {
 }
+
+bool Water::hasCollisions(void) const
+{
+	return false;
+}

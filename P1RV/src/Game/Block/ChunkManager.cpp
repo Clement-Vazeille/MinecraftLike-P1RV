@@ -167,19 +167,22 @@ bool ChunkManager::isPositionAllowed(const glm::vec3& coordonneesJoueur)
 			{
 				Vector2I cooChunkActuel;
 				Vector3I cooBlockActuel;
-				if (findBlock(coordonneesReel + glm::vec3(deltaX, deltaY, deltaZ), &cooChunkActuel, &cooBlockActuel, nullptr))
+				Block* block = nullptr;
+				if (findBlock(coordonneesReel + glm::vec3(deltaX, deltaY, deltaZ), &cooChunkActuel, &cooBlockActuel, &block))
 				{
-					glm::vec3 blockMins(cooBlockActuel.getX()+cooChunkActuel.getX()*16, cooBlockActuel.getY(), cooBlockActuel.getZ() + (cooChunkActuel.getZ() * 16));
-					glm::vec3 blockMaxs(blockMins.x+1,blockMins.y+1,blockMins.z+1);
+					if (block->hasCollisions())
+					{
+						glm::vec3 blockMins(cooBlockActuel.getX() + cooChunkActuel.getX() * 16, cooBlockActuel.getY(), cooBlockActuel.getZ() + (cooChunkActuel.getZ() * 16));
+						glm::vec3 blockMaxs(blockMins.x + 1, blockMins.y + 1, blockMins.z + 1);
 
-					if(collisionAABB(playerMins,playerMaxs,blockMins,blockMaxs))
-						return false;
+						if (collisionAABB(playerMins, playerMaxs, blockMins, blockMaxs))
+							return false;
+					}
 				}
 			}
 		}
 	}
 	return true;
-	
 }
 
 bool ChunkManager::collisionAABB(const glm::vec3& aMins, const glm::vec3& aMaxs, const glm::vec3& bMins, const glm::vec3& bMaxs)

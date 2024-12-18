@@ -30,4 +30,9 @@ string Block::getTexturei(int i)
 	return textures[i];
 }
 
+bool Block::hasCollisions(void) const
+{
+	return true;
+}
+
 
