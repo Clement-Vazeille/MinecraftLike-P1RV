@@ -44,7 +44,7 @@ private:
     Vector2I highlightedBlockChunkPosition;
     Vector3I highlightedFace;
 
-    int hotbarActiveSlot = 0; //valeur entre 0 et 9
+    float hotbarActiveSlot = 0; //valeur entre 0 et 9
 
     //Fonctions de callback statics donnees a OpenGL, leur role est d'appeler les fonctions de callback de la classe definies plus bas 
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -69,6 +69,9 @@ public:
 
     //Process des inputs de mouvement
     void processMovements();
+
+    //Process des autres inputs
+    void processOtherInputs();
 
     //Process des inputs de la souris
     void processClicks();

@@ -40,6 +40,7 @@ int main()
 
         // Upadate du jeu
         maFenetre->upadateChunks();
+        maFenetre->processOtherInputs();
         maFenetre->processHotbarSelection();
         maFenetre->processMovements();
         maFenetre->selectBlock();

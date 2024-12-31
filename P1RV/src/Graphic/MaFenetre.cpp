@@ -107,11 +107,19 @@ void MaFenetre::mouse_callback(double xposIn, double yposIn)
 
 void MaFenetre::scroll_callback(double xoffset, double yoffset)
 {
+    float scrollSensitivity = 1.0f;
+    hotbarActiveSlot += (float)yoffset * scrollSensitivity;
+    if (hotbarActiveSlot < 0.0f)
+        hotbarActiveSlot = 0.0f;
+    if (hotbarActiveSlot > 9.9f)
+        hotbarActiveSlot = 9.9f;
+    /*
     fov -= (float)yoffset;
     if (fov < 1.0f)
         fov = 1.0f;
     if (fov > 45.0f)
         fov = 45.0f;
+        */
 }
 
 void MaFenetre::key_callback(int key, int scancode, int action, int mods)
@@ -200,6 +208,14 @@ void MaFenetre::processMovements()
     
 }
 
+void MaFenetre::processOtherInputs()
+{
+    if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS)
+        fov = 10.f;
+    else 
+        fov = 45.f;
+}
+
 void MaFenetre::processClicks()
 {
     blockInteractionTimer += deltaTime;
@@ -223,25 +239,25 @@ void MaFenetre::processClicks()
 void MaFenetre::processHotbarSelection()
 {
     if (glfwGetKey(mWindow, GLFW_KEY_1) == GLFW_PRESS)
-        hotbarActiveSlot=0;
+        hotbarActiveSlot=0.f;
     if (glfwGetKey(mWindow, GLFW_KEY_2) == GLFW_PRESS)
-        hotbarActiveSlot = 1;
+        hotbarActiveSlot = 1.f;
     if (glfwGetKey(mWindow, GLFW_KEY_3) == GLFW_PRESS)
-        hotbarActiveSlot = 2;
+        hotbarActiveSlot = 2.f;
     if (glfwGetKey(mWindow, GLFW_KEY_4) == GLFW_PRESS)
-        hotbarActiveSlot = 3;
+        hotbarActiveSlot = 3.f;
     if (glfwGetKey(mWindow, GLFW_KEY_5) == GLFW_PRESS)
-        hotbarActiveSlot = 4;
+        hotbarActiveSlot = 4.f;
     if (glfwGetKey(mWindow, GLFW_KEY_6) == GLFW_PRESS)
-        hotbarActiveSlot = 5;
+        hotbarActiveSlot = 5.f;
     if (glfwGetKey(mWindow, GLFW_KEY_7) == GLFW_PRESS)
-        hotbarActiveSlot = 6;
+        hotbarActiveSlot = 6.f;
     if (glfwGetKey(mWindow, GLFW_KEY_8) == GLFW_PRESS)
-        hotbarActiveSlot = 7;
+        hotbarActiveSlot = 7.f;
     if (glfwGetKey(mWindow, GLFW_KEY_9) == GLFW_PRESS)
-        hotbarActiveSlot = 8;
+        hotbarActiveSlot = 8.f;
     if (glfwGetKey(mWindow, GLFW_KEY_0) == GLFW_PRESS)
-        hotbarActiveSlot = 9;
+        hotbarActiveSlot = 9.f;
 }
 
 void MaFenetre::upadateChunks()
@@ -322,7 +338,7 @@ Vector2I MaFenetre::getHighlightedBlockChunkPosition(void) const
 
 int MaFenetre::getHotbarActiveSlot(void) const
 {
-    return hotbarActiveSlot;
+    return static_cast<int>(hotbarActiveSlot);
 }
 
 HotBar* MaFenetre::getHotBar(void) const
