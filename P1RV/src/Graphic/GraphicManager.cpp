@@ -354,6 +354,7 @@ void GraphicManager::Load(MaFenetre* fenetre)
     glEnableVertexAttribArray(0);
 
     glEnable(GL_CULL_FACE);
+    glEnable(GL_MULTISAMPLE);
 }
 
 void GraphicManager::Draw(MaFenetre* fenetre)
