@@ -37,7 +37,7 @@ private:
 
 	void HighlightBlock(Block* block, const Vector2I& chunkPosition);
 
-	void DrawViseur();
+	void DrawViseur(float windowRatio);
 
 	void DrawHotbar();
 	void DrawHotbarSelection();

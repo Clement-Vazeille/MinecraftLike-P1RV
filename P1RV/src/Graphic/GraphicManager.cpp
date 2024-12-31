@@ -56,9 +56,33 @@ void GraphicManager::HighlightBlock(Block* block, const Vector2I& chunkPosition)
     }
 }
 
-void GraphicManager::DrawViseur()
+void GraphicManager::DrawViseur(float windowRatio)
 {
-    glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, nullptr);
+    float centreDelta = 0.02f;
+   
+    glm::mat4 transformation = glm::mat4(1.0f);
+    transformation = glm::translate(transformation,glm::vec3(-centreDelta,0,0));
+    viseurShader.setMat4("transformation", transformation);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+    transformation = glm::mat4(1.0f);
+    transformation = glm::translate(transformation, glm::vec3(centreDelta, 0, 0));
+    viseurShader.setMat4("transformation", transformation);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+    transformation = glm::mat4(1.0f);
+    transformation = glm::translate(transformation, glm::vec3(0, centreDelta *windowRatio, 0));
+    transformation = glm::rotate(transformation, glm::radians(90.0f), glm::vec3(0, 0, 1));
+    transformation = glm::scale(transformation, glm::vec3(windowRatio,1/windowRatio,1));
+    viseurShader.setMat4("transformation", transformation);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+    transformation = glm::mat4(1.0f);
+    transformation = glm::translate(transformation, glm::vec3(0, -centreDelta * windowRatio, 0));
+    transformation = glm::rotate(transformation, glm::radians(90.0f), glm::vec3(0, 0, 1));
+    transformation = glm::scale(transformation, glm::vec3(windowRatio, 1 / windowRatio, 1));
+    viseurShader.setMat4("transformation", transformation);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
 void GraphicManager::DrawHotbar()
@@ -94,7 +118,7 @@ void GraphicManager::DrawHotbarBlocks(HotBar* hotbar)
         if (blocks->at(i) != nullptr)
         {
             glm::mat4 translation = glm::mat4(1.0f);
-            translation = glm::translate(translation, glm::vec3(-0.475f +(i*0.105f), -0.92f, 0));
+            translation = glm::translate(translation, glm::vec3(-0.475f +(i*0.1056f), -0.92f, 0));
             hotbarBlockShader.setMat4("translation", translation);
 
             Block* block = new Block;
@@ -226,39 +250,15 @@ void GraphicManager::Load(MaFenetre* fenetre)
         //+,+
         //-,+
 
-         -0.115f, -0.01f,   //rectangle gauche
-         -0.04f, -0.01f,
-         -0.04f, 0.01f,
-         -0.115f,  0.01f,
-
-         -0.008f, -0.14f,   //rectangle bas
-         0.008f, -0.14f,
-         0.008f, -0.05f,
-         -0.008f, -0.05f,
-
-         0.04f, -0.01f, //rectangle droit
-         0.115f,  -0.01f,
-         0.115f,  0.01f,
-         0.04f, 0.01f,
-
-         -0.008f, 0.05f, //rectangle haut
-         0.008f,  0.05f,
-         0.008f,  0.14f,
-         -0.008f,  0.14f
+         -0.01f, -0.005f,   
+         0.01f, -0.005f,
+         0.01f, 0.005f,
+         -0.01f,  0.005f
     };
     
     unsigned int indicesViseur[] = {
     0, 1, 2, // bottom triangle
     2, 3, 0,  // top triangle
-
-    4, 5, 6, // bottom triangle
-    6, 7, 4,  // top triangle
-
-    8, 9, 10, // bottom triangle
-    10, 11, 8,  // top triangle
-
-    12, 13, 14, // bottom triangle
-    14, 15, 12  // top triangle
     };
 
     glGenVertexArrays(1, &VAOviseur);
@@ -287,11 +287,10 @@ void GraphicManager::Load(MaFenetre* fenetre)
         //+,-
         //+,+
         //-,+
-
-         -0.55f, -1.0f, 0.0f, 0.0f,    
-         0.55f, -1.0f, 1.0f, 0.0f,
-         0.55f, -0.84f, 1.0f, 1.0f, 
-         -0.55f,  -0.84f, 0.0f, 1.0f
+        0.225f, 0.f, 0.0f, 0.0f,
+        0.775f, 0.f, 1.0f, 0.0f,
+        0.775f, 0.082f, 1.0f, 1.0f,
+        0.225f, 0.082f, 0.0f, 1.0f
     };
 
     unsigned int indicesHotbar[] = {
@@ -391,12 +390,16 @@ void GraphicManager::Draw(MaFenetre* fenetre)
     //On dessine le viseur
     glBindVertexArray(VAOviseur);
     viseurShader.use();
-    this->DrawViseur();
+    projection = glm::ortho(-0.5f, 0.5f, -0.5f, 0.5f);
+    viseurShader.setMat4("projection", projection);
+    this->DrawViseur((float)fenetre->getSCR_WIDTH() / (float)fenetre->getSCR_HEIGHT());
 
     
     //On dessine la hotbar
     glBindVertexArray(VAOhotbar);
     hotbarShader.use();
+    projection = glm::ortho(0, 1, 0, 1);
+    hotbarShader.setMat4("projection", projection);
     this->DrawHotbar();
 
     //On dessine la selection de la hotbar
