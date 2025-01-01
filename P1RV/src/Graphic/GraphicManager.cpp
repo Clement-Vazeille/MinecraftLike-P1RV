@@ -380,9 +380,21 @@ void GraphicManager::Draw(MaFenetre* fenetre)
     //Transmission de la matrice de vue de la caméra aux shaders
     ourShader.setMat4("view", view);
 
+    glm::vec3 lightColor;
+    lightColor.x = sin(glfwGetTime() * 2.0f);
+    lightColor.y = sin(glfwGetTime() * 0.7f);
+    lightColor.z = sin(glfwGetTime() * 1.3f);
+
+    glm::vec3 diffuseColor = lightColor * glm::vec3(0.8f);
+    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+
+    ourShader.setVec3("light.ambient", ambientColor);
+    ourShader.setVec3("light.diffuse", diffuseColor);
+    ourShader.setVec3("light.specular", 0.5f, 0.5f, 0.5f);
+
     ourShader.setVec3("lightColor", 1.f, 1.0f, 1.0f);
     glm::vec3 lightPos(8.0f, 8.0f, 8.0f);
-    ourShader.setVec3("lightPos", lightPos);
+    ourShader.setVec3("light.position", lightPos);
     ourShader.setVec3("viewPos", fenetre->getcameraPos());
 
    
