@@ -11,7 +11,7 @@ using namespace std;
 class TextureManager
 {
 protected:
-	void LoadTexture(string fileName, Shader shader);
+	void LoadTexture(string fileName, Shader& shader);
 	unordered_map<string, int> texIDMap;
 public:
 	//charge l'entierete des textures et donne leur id aux shaders

@@ -1,6 +1,6 @@
 #include "TextureManager.h"
 
-void TextureManager::LoadTexture(string fileName, Shader shader)
+void TextureManager::LoadTexture(string fileName, Shader& shader)
 {
     unsigned int currentTex;
     //On recupere l'id de la texture
