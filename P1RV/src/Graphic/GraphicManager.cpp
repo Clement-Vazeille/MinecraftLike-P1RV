@@ -392,7 +392,12 @@ void GraphicManager::Draw(MaFenetre* fenetre)
     ourShader.setVec3("light.diffuse", diffuseColor);
     ourShader.setVec3("light.specular", 0.5f, 0.5f, 0.5f);
 
-    ourShader.setVec3("lightColor", 1.f, 1.0f, 1.0f);
+    //valeurs changeant l'attenuation de la lumière
+    //augmenter les termes lineaires et quadratiques pour réduire la puissance
+    ourShader.setFloat("light.constant", 1.0f);
+    ourShader.setFloat("light.linear", 0.045f);
+    ourShader.setFloat("light.quadratic", 0.0075f);
+
     glm::vec3 lightPos(8.0f, 8.0f, 8.0f);
     ourShader.setVec3("light.position", lightPos);
     ourShader.setVec3("viewPos", fenetre->getcameraPos());
