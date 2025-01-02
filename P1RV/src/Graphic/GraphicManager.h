@@ -7,7 +7,7 @@
 #include "../Game/Block/ChunkManager.h"
 #include "../Game/HotBar.h"
 #include "MaFenetre.h"
-
+#include "LightManager.h"
 
 //Classe qui manage la partie Graphique de l'application
 //Elle prend en entree une fenetre ainsi que l'ensemble des blocks et va dessiner les blocks sur la fenetre
@@ -24,6 +24,8 @@ private:
 	Shader hotbarShader;
 	Shader hotbarSelectionShader;
 	Shader hotbarBlockShader;
+
+	LightManager* lightManager;
 
 	unsigned int VBOblock, VAOblock, EBOblock; //used by blocks, block selection and will be used for hotbarBlocks
 	unsigned int VBOviseur, VAOviseur, EBOviseur;

@@ -139,7 +139,8 @@ GraphicManager::GraphicManager() : ourShader("src/Graphic/Shader/shader.vs", "sr
     hotbarSelectionShader("src/Graphic/Shader/shaderHotbarSelection.vs", "src/Graphic/Shader/shaderHotbarSelection.fs"),
     hotbarBlockShader("src/Graphic/Shader/shaderHotbarBlock.vs", "src/Graphic/Shader/shaderHotbarBlock.fs"),
     VAOblock(0),VBOblock(0),EBOblock(0),VAOviseur(0),VBOviseur(0),EBOviseur(0),
-    VAOhotbar(0), VBOhotbar(0), EBOhotbar(0), VAOhotbarSelector(0), VBOhotbarSelector(0), EBOhotbarSelector(0)
+    VAOhotbar(0), VBOhotbar(0), EBOhotbar(0), VAOhotbarSelector(0), VBOhotbarSelector(0), EBOhotbarSelector(0),
+    lightManager(new LightManager)
 {
 }
 
@@ -380,26 +381,8 @@ void GraphicManager::Draw(MaFenetre* fenetre)
     //Transmission de la matrice de vue de la caméra aux shaders
     ourShader.setMat4("view", view);
 
-    glm::vec3 lightColor;
-    lightColor.x = sin(glfwGetTime() * 2.0f);
-    lightColor.y = sin(glfwGetTime() * 0.7f);
-    lightColor.z = sin(glfwGetTime() * 1.3f);
+    lightManager->Update(ourShader, glfwGetTime());
 
-    glm::vec3 diffuseColor = lightColor * glm::vec3(0.8f);
-    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
-
-    ourShader.setVec3("light.ambient", ambientColor);
-    ourShader.setVec3("light.diffuse", diffuseColor);
-    ourShader.setVec3("light.specular", 0.5f, 0.5f, 0.5f);
-
-    //valeurs changeant l'attenuation de la lumière
-    //augmenter les termes lineaires et quadratiques pour réduire la puissance
-    ourShader.setFloat("light.constant", 1.0f);
-    ourShader.setFloat("light.linear", 0.045f);
-    ourShader.setFloat("light.quadratic", 0.0075f);
-
-    glm::vec3 lightPos(8.0f, 8.0f, 8.0f);
-    ourShader.setVec3("light.position", lightPos);
     ourShader.setVec3("viewPos", fenetre->getcameraPos());
 
    
