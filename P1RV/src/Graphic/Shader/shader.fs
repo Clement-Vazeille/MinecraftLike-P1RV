@@ -26,8 +26,10 @@ struct PointLight {
 	float linear;
 	float quadratic;
 };
-#define NR_POINT_LIGHTS 2
-uniform PointLight pointLights[NR_POINT_LIGHTS];
+#define MAX_NBR_POINT_LIGHTS 10
+uniform PointLight pointLights[MAX_NBR_POINT_LIGHTS];
+uniform int nbrPointLights;
+
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 FragPos, vec3 viewDir);
 
 // texture sampler
@@ -40,11 +42,9 @@ void main()
 	vec3 norm = normalize(Normal);
 	vec3 viewDir = normalize(viewPos - FragPos);
 
-    //TODO : ne calculer qu'une fois le reflect vector pour optimiser un peu
     vec3 result = CalcDirLight(dirlight,norm,viewDir);
-    for(int i=0;i<NR_POINT_LIGHTS;i++)
+    for(int i=0;i<nbrPointLights;i++)
         result += CalcPointLight(pointLights[i],norm,FragPos,viewDir);
-    //vec3 result = CalcPointLight(pointLights[0],norm,FragPos,viewDir) + CalcPointLight(pointLights[1],norm,FragPos,viewDir) + CalcDirLight(dirlight,norm,viewDir);
 
 	FragColor = vec4(result * texture(texture1, TexCoord).xyz, 1.0);
 }

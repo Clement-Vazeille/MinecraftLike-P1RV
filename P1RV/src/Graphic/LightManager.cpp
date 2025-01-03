@@ -1,5 +1,25 @@
 ﻿#include "LightManager.h"
 
+void LightManager::AddPointLight(glm::vec3& position,int id, glm::vec3& color ,Shader& shader)
+{
+    
+
+    glm::vec3 diffuseColor = color * glm::vec3(0.8f);
+    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+
+    shader.setVec3("pointLights[" + std::to_string(id) + "].ambient", ambientColor);
+    shader.setVec3("pointLights[" + std::to_string(id) + "].diffuse", diffuseColor);
+    shader.setVec3("pointLights[" + std::to_string(id) + "].specular", 0.4f, 0.4f, 0.4f);
+
+    //valeurs changeant l'attenuation de la lumière
+    //augmenter les termes lineaires et quadratiques pour réduire la puissance
+    shader.setFloat("pointLights[" + std::to_string(id) + "].constant", 1.0f);
+    shader.setFloat("pointLights[" + std::to_string(id) + "].linear", 0.045f);
+    shader.setFloat("pointLights[" + std::to_string(id) + "].quadratic", 0.0075f);
+
+    shader.setVec3("pointLights[" + std::to_string(id) + "].position", position);
+}
+
 LightManager::LightManager()
 {
 }
@@ -11,41 +31,20 @@ void LightManager::Update(Shader& shader,float time)
 
     shader.setVec3("dirlight.ambient", 0.2f, 0.2f, 0.2f);
     shader.setVec3("dirlight.diffuse", 0.8f, 0.8f, 0.8f);
-    shader.setVec3("dirlight.specular", 0.5f, 0.5f, 0.5f);
+    shader.setVec3("dirlight.specular", 0.4f, 0.4f, 0.4f);
 
-    //paramétrage lumière ponctuelle
+    //paramétrage lumières ponctuelles
+    int nb = 2;
+    shader.setInt("nbrPointLights",nb);
+
     glm::vec3 pointLightsColor;
     pointLightsColor.x = sin(time * 2.0f);
     pointLightsColor.y = sin(time * 0.7f);
     pointLightsColor.z = sin(time * 1.3f);
 
-    glm::vec3 diffuseColor = pointLightsColor * glm::vec3(0.8f);
-    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
-
-    shader.setVec3("pointLights[0].ambient", ambientColor);
-    shader.setVec3("pointLights[0].diffuse", diffuseColor);
-    shader.setVec3("pointLights[0].specular", 0.5f, 0.5f, 0.5f);
-
-    //valeurs changeant l'attenuation de la lumière
-    //augmenter les termes lineaires et quadratiques pour réduire la puissance
-    shader.setFloat("pointLights[0].constant", 1.0f);
-    shader.setFloat("pointLights[0].linear", 0.045f);
-    shader.setFloat("pointLights[0].quadratic", 0.0075f);
-
-    glm::vec3 lightPos(8.0f, 8.0f, 8.0f);
-    shader.setVec3("pointLights[0].position", lightPos);
-
-    //lumiere 2
-    shader.setVec3("pointLights[1].ambient", ambientColor);
-    shader.setVec3("pointLights[1].diffuse", diffuseColor);
-    shader.setVec3("pointLights[1].specular", 0.5f, 0.5f, 0.5f);
-
-    //valeurs changeant l'attenuation de la lumière
-    //augmenter les termes lineaires et quadratiques pour réduire la puissance
-    shader.setFloat("pointLights[1].constant", 1.0f);
-    shader.setFloat("pointLights[1].linear", 0.045f);
-    shader.setFloat("pointLights[1].quadratic", 0.0075f);
-
-    glm::vec3 lightPos2(20.0f, 8.0f, 20.0f);
-    shader.setVec3("pointLights[1].position", lightPos2);
+    for (int i = 0; i < nb; i++)
+    {
+        glm::vec3 position(8.0f + 16.f * i, 8.0f, 8.0f+16.f*i);
+        this->AddPointLight(position, i, pointLightsColor, shader);
+    }
 }
