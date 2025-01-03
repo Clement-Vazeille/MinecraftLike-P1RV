@@ -25,12 +25,15 @@ private:
 	Shader hotbarSelectionShader;
 	Shader hotbarBlockShader;
 
+	Shader skyboxShader;
+
 	LightManager* lightManager;
 
 	unsigned int VBOblock, VAOblock, EBOblock; //used by blocks, block selection and will be used for hotbarBlocks
 	unsigned int VBOviseur, VAOviseur, EBOviseur;
 	unsigned int VBOhotbar, VAOhotbar, EBOhotbar;
 	unsigned int VBOhotbarSelector, VAOhotbarSelector, EBOhotbarSelector;
+	unsigned int VBOskybox, VAOskybox;
 
 	//Fonctions utilitaires qui permettent de dessiner nos éléments
 	void DrawBlock(Block* block, const Vector2I& chunkPosition);

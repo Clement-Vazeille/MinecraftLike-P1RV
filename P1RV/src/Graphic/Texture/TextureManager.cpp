@@ -34,6 +34,48 @@ void TextureManager::LoadTexture(string fileName, Shader& shader)
     texIDMap.insert(make_pair(fileName, currentTex));
 }
 
+void TextureManager::LoadCubemaps()
+{
+    vector<std::string> faces
+    {
+        "Assets/skybox/right.jpg",
+        "Assets/skybox/left.jpg",
+        "Assets/skybox/top.jpg",
+        "Assets/skybox/bottom.jpg",
+        "Assets/skybox/front.jpg",
+        "Assets/skybox/back.jpg"
+    };
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+    int width, height, nrChannels;
+    for (unsigned int i = 0; i < faces.size(); i++)
+    {
+        unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+        if (data)
+        {
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+            );
+            stbi_image_free(data);
+        }
+        else
+        {
+            std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
+            stbi_image_free(data);
+        }
+    }
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+
+}
+
+
 void TextureManager::Load(Shader shader)
 {
 	LoadTexture("Assets/Block/crafting_Table_side.png",shader);
@@ -54,10 +96,18 @@ void TextureManager::Load(Shader shader)
     LoadTexture("Assets/Block/grass_block_snow_side.png", shader);
     LoadTexture("Assets/Block/grass_block_snow_top.png", shader);
     LoadTexture("Assets/HUD/hotbar.png", shader);
+
+    this->LoadCubemaps();
 }
 
 void TextureManager::BindTexture(string fileName) const
 {
 	glActiveTexture(GL_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, texIDMap.at(fileName));
+}
+
+void TextureManager::BindSkyCubemap() const
+{
+    glActiveTexture(GL_TEXTURE);
+    glBindTexture(GL_TEXTURE_2D, skyCubemapID);
 }

@@ -175,6 +175,8 @@
     <None Include="src\Graphic\Shader\shaderHotbarBlock.fs" />
     <None Include="src\Graphic\Shader\shaderHotbarBlock.vs" />
     <None Include="src\Graphic\Shader\shaderHotbarSelection.fs" />
+    <None Include="src\Graphic\Shader\shaderSkybox.vs" />
+    <None Include="src\Graphic\Shader\shaderSkybox.fs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Block\birch_log.png">

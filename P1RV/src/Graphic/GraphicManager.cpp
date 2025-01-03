@@ -138,8 +138,10 @@ GraphicManager::GraphicManager() : ourShader("src/Graphic/Shader/shader.vs", "sr
     hotbarShader("src/Graphic/Shader/shaderHotbar.vs", "src/Graphic/Shader/shaderHotbar.fs"),
     hotbarSelectionShader("src/Graphic/Shader/shaderHotbarSelection.vs", "src/Graphic/Shader/shaderHotbarSelection.fs"),
     hotbarBlockShader("src/Graphic/Shader/shaderHotbarBlock.vs", "src/Graphic/Shader/shaderHotbarBlock.fs"),
+    skyboxShader("src/Graphic/Shader/shaderSkybox.vs", "src/Graphic/Shader/shaderSkybox.fs"),
     VAOblock(0),VBOblock(0),EBOblock(0),VAOviseur(0),VBOviseur(0),EBOviseur(0),
     VAOhotbar(0), VBOhotbar(0), EBOhotbar(0), VAOhotbarSelector(0), VBOhotbarSelector(0), EBOhotbarSelector(0),
+    VAOskybox(0),VBOskybox(0),
     lightManager(new LightManager)
 {
 }
@@ -156,8 +158,10 @@ GraphicManager::~GraphicManager()
     glDeleteBuffers(1, &VBOhotbar);
     glDeleteBuffers(1, &EBOhotbar);
     glDeleteVertexArrays(1, &VAOhotbarSelector);
-    glDeleteBuffers(1, &VAOhotbarSelector);
-    glDeleteBuffers(1, &VAOhotbarSelector);
+    glDeleteBuffers(1, &VBOhotbarSelector); 
+    glDeleteBuffers(1, &EBOhotbarSelector);
+    glDeleteBuffers(1, &VAOskybox);
+    glDeleteBuffers(1, &VBOskybox);
 }
 
 void GraphicManager::Load(MaFenetre* fenetre)
@@ -357,6 +361,65 @@ void GraphicManager::Load(MaFenetre* fenetre)
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
+    //SkyBox
+    float skyboxVertices[] = {
+        // positions          
+        -1.0f,  1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+        -1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f
+    };
+
+    glGenVertexArrays(1, &VAOskybox);
+    glGenBuffers(1, &VBOskybox);
+
+    glBindVertexArray(VAOskybox);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBOskybox);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
     glEnable(GL_CULL_FACE);
     glEnable(GL_MULTISAMPLE);
 }
@@ -373,6 +436,17 @@ void GraphicManager::Draw(MaFenetre* fenetre)
 
     glm::mat4 projection = glm::perspective(glm::radians(fenetre->getfov()), (float)fenetre->getSCR_WIDTH() / (float)fenetre->getSCR_HEIGHT(), 0.1f, 100.0f);
     glm::mat4 view = glm::lookAt(fenetre->getcameraPos(), fenetre->getcameraPos() + fenetre->getcameraFront(), fenetre->getcameraUp());
+    
+    
+    glDepthMask(GL_FALSE);
+    skyboxShader.use();
+    skyboxShader.setMat4("projection", projection);
+    skyboxShader.setMat4("view", glm::mat4(glm::mat3(view)));
+    glBindVertexArray(VAOskybox);
+    textureManager.BindSkyCubemap();
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glDepthMask(GL_TRUE);
+    
     //On assigne le VAO des cubes
     glBindVertexArray(VAOblock);
     

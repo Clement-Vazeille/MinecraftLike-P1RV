@@ -217,6 +217,8 @@
     <None Include="src\Graphic\Shader\shaderHotbarSelection.vs" />
     <None Include="src\Graphic\Shader\shaderSelection.fs" />
     <None Include="src\Graphic\Shader\shaderSelection.vs" />
+    <None Include="src\Graphic\Shader\shaderSkybox.fs" />
+    <None Include="src\Graphic\Shader\shaderSkybox.vs" />
     <None Include="src\Graphic\Shader\shaderViseur.fs" />
     <None Include="src\Graphic\Shader\shaderViseur.vs" />
   </ItemGroup>
