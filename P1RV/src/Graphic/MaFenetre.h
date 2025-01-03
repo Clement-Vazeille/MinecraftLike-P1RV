@@ -57,6 +57,8 @@ private:
     float blockInteractionCooldown = 0.085f;
     float blockInteractionTimer = 0.f;
 
+    bool isItNight = false;
+
 public:
     MaFenetre();
     ~MaFenetre();
@@ -103,5 +105,6 @@ public:
     Vector2I getHighlightedBlockChunkPosition(void) const;
     int getHotbarActiveSlot(void) const;
     HotBar* getHotBar(void) const;
+    bool getIsItNight(void) const;
 };
 

@@ -1,4 +1,4 @@
-#include "MaFenetre.h"
+﻿#include "MaFenetre.h"
 
 void MaFenetre::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -129,6 +129,10 @@ void MaFenetre::key_callback(int key, int scancode, int action, int mods)
         movementModeVol = !movementModeVol;
         yUpForce = 0.f;
     }
+
+    //traitement passage à la nuit
+    if (key == GLFW_KEY_N && action == GLFW_PRESS)
+        isItNight = !isItNight;
 
     //traitement sortie de l'application
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -344,4 +348,9 @@ int MaFenetre::getHotbarActiveSlot(void) const
 HotBar* MaFenetre::getHotBar(void) const
 {
     return hotbar;
+}
+
+bool MaFenetre::getIsItNight(void) const
+{
+    return isItNight;
 }

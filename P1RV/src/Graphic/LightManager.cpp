@@ -24,14 +24,25 @@ LightManager::LightManager()
 {
 }
 
-void LightManager::Update(Shader& shader,float time)
+void LightManager::Update(Shader& shader,float time, MaFenetre* fenetre)
 {
     //paramétrage lumière directionnelle
-    shader.setVec3("dirlight.direction", -0.2f, -1.0f, -0.3f);
+    if (fenetre->getIsItNight())
+    {
+        shader.setVec3("dirlight.direction", -0.2f, -1.0f, -0.3f);
 
-    shader.setVec3("dirlight.ambient", 0.2f, 0.2f, 0.2f);
-    shader.setVec3("dirlight.diffuse", 0.8f, 0.8f, 0.8f);
-    shader.setVec3("dirlight.specular", 0.4f, 0.4f, 0.4f);
+        shader.setVec3("dirlight.ambient", 0.18f, 0.18f, 0.18f);
+        shader.setVec3("dirlight.diffuse", 0.05f, 0.05f, 0.05f);
+        shader.setVec3("dirlight.specular", 0.03f, 0.03f, 0.03f);
+    }
+    else
+    {
+        shader.setVec3("dirlight.direction", -0.2f, -1.0f, -0.3f);
+
+        shader.setVec3("dirlight.ambient", 0.2f, 0.2f, 0.2f);
+        shader.setVec3("dirlight.diffuse", 0.8f, 0.8f, 0.8f);
+        shader.setVec3("dirlight.specular", 0.5f, 0.5f, 0.5f);
+    }
 
     //paramétrage lumières ponctuelles
     int nb = 2;
