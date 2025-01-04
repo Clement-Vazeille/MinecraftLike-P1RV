@@ -428,10 +428,7 @@ void GraphicManager::Draw(MaFenetre* fenetre)
 {
     glEnable(GL_DEPTH_TEST);
     //clear du rendu précédent
-    if(fenetre->getIsItNight())
-        glClearColor(10.f / 255.f, 10.f / 255.f, 10.f / 255.f, 1.0f);
-    else
-        glClearColor(135.f / 255.f, 206.f / 255.f, 235.f / 255.f, 1.0f);
+    glClearColor(255.f / 255.f, 255.f / 255.f, 255.f / 255.f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glm::mat4 projection = glm::perspective(glm::radians(fenetre->getfov()), (float)fenetre->getSCR_WIDTH() / (float)fenetre->getSCR_HEIGHT(), 0.1f, 100.0f);
@@ -443,7 +440,10 @@ void GraphicManager::Draw(MaFenetre* fenetre)
     skyboxShader.setMat4("projection", projection);
     skyboxShader.setMat4("view", glm::mat4(glm::mat3(view)));
     glBindVertexArray(VAOskybox);
-    textureManager.BindSkyCubemap();
+    if (fenetre->getIsItNight())
+        textureManager.BindSkyNightCubemap();
+    else
+        textureManager.BindSkyDayCubemap();
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glDepthMask(GL_TRUE);
     

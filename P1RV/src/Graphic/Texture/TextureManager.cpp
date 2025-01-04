@@ -1,4 +1,4 @@
-#include "TextureManager.h"
+﻿#include "TextureManager.h"
 
 void TextureManager::LoadTexture(string fileName, Shader& shader)
 {
@@ -36,43 +36,83 @@ void TextureManager::LoadTexture(string fileName, Shader& shader)
 
 void TextureManager::LoadCubemaps()
 {
-    vector<std::string> faces
+    /*vector<std::string> faces
     {
         "Assets/skybox/right.jpg",
         "Assets/skybox/left.jpg",
         "Assets/skybox/top.jpg",
         "Assets/skybox/bottom.jpg",
-        "Assets/skybox/front.jpg",
+        "Assets/skybox/day/front.png", //le soleil doit être sur front en haut à droite
         "Assets/skybox/back.jpg"
+    };*/
+    vector<std::string> facesday
+    {
+        "Assets/skybox/day/front.png",
+        "Assets/skybox/day/front.png",
+        "Assets/skybox/day/front.png",
+        "Assets/skybox/day/front.png",
+        "Assets/skybox/day/front.png", //le soleil doit être sur front en haut à droite
+        "Assets/skybox/day/front.png"
     };
-    unsigned int textureID;
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+    glGenTextures(1, &skyDayCubemapID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, skyDayCubemapID);
 
     int width, height, nrChannels;
-    for (unsigned int i = 0; i < faces.size(); i++)
+    for (unsigned int i = 0; i < facesday.size(); i++)
     {
-        unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+        unsigned char* data = stbi_load(facesday[i].c_str(), &width, &height, &nrChannels, 0);
         if (data)
         {
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+                0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data
             );
             stbi_image_free(data);
         }
         else
         {
-            std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
+            std::cout << "Cubemap tex failed to load at path: " << facesday[i] << std::endl;
             stbi_image_free(data);
         }
     }
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    
+    vector<std::string> facesnight
+    {
+        "Assets/skybox/night/front.png",
+        "Assets/skybox/night/front.png",
+        "Assets/skybox/night/front.png",
+        "Assets/skybox/night/front.png",
+        "Assets/skybox/night/front.png", //le soleil doit être sur front en haut à droite
+        "Assets/skybox/night/front.png"
+    };
+    glGenTextures(1, &skyNightCubemapID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, skyNightCubemapID);
 
-
+    for (unsigned int i = 0; i < facesnight.size(); i++)
+    {
+        unsigned char* data = stbi_load(facesnight[i].c_str(), &width, &height, &nrChannels, 0);
+        if (data)
+        {
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data
+            );
+            stbi_image_free(data);
+        }
+        else
+        {
+            std::cout << "Cubemap tex failed to load at path: " << facesnight[i] << std::endl;
+            stbi_image_free(data);
+        }
+    }
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 }
 
 
@@ -106,8 +146,14 @@ void TextureManager::BindTexture(string fileName) const
 	glBindTexture(GL_TEXTURE_2D, texIDMap.at(fileName));
 }
 
-void TextureManager::BindSkyCubemap() const
+void TextureManager::BindSkyNightCubemap() const
 {
     glActiveTexture(GL_TEXTURE);
-    glBindTexture(GL_TEXTURE_2D, skyCubemapID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, skyNightCubemapID);
+}
+
+void TextureManager::BindSkyDayCubemap() const
+{
+    glActiveTexture(GL_TEXTURE);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, skyDayCubemapID);
 }

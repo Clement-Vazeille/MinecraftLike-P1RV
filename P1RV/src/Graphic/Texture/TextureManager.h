@@ -15,13 +15,15 @@ protected:
 	unordered_map<string, int> texIDMap;
 
 	void LoadCubemaps();
-	unsigned int skyCubemapID = 0;
+	unsigned int skyDayCubemapID = 0;
+	unsigned int skyNightCubemapID = 0;
 public:
 	//charge l'entierete des textures et donne leur id aux shaders
 	void Load(Shader shader);
 	
 	//Prend en entree le chemin vers une texture (elle doit deja etre chargee) et la place comme texture utilisee pour les prochains rendus
 	void BindTexture(string fileName) const;
-	void BindSkyCubemap() const;
+	void BindSkyDayCubemap() const;
+	void BindSkyNightCubemap() const;
 };
 
