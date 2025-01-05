@@ -110,16 +110,9 @@ void MaFenetre::scroll_callback(double xoffset, double yoffset)
     float scrollSensitivity = 1.0f;
     hotbarActiveSlot += (float)yoffset * scrollSensitivity;
     if (hotbarActiveSlot < 0.0f)
-        hotbarActiveSlot = 0.0f;
+        hotbarActiveSlot = 9.5f;
     if (hotbarActiveSlot > 9.9f)
-        hotbarActiveSlot = 9.9f;
-    /*
-    fov -= (float)yoffset;
-    if (fov < 1.0f)
-        fov = 1.0f;
-    if (fov > 45.0f)
-        fov = 45.0f;
-        */
+        hotbarActiveSlot = 0.5f;
 }
 
 void MaFenetre::key_callback(int key, int scancode, int action, int mods)
