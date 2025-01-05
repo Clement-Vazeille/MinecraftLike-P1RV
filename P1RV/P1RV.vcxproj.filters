@@ -84,6 +84,18 @@
     <ClCompile Include="src\Game\Block\SpecificBlocks\Water.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphic\LightManager.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\Block\SpecificBlocks\Light\LightBlock.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\Block\SpecificBlocks\Light\PurpleLight.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\Block\SpecificBlocks\Light\RedLight.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Graphic\Shader\shader_s.h">
@@ -155,6 +167,21 @@
     <ClInclude Include="src\Game\Block\SpecificBlocks\Water.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphic\LightManager.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\Block\SpecificBlocks\Light\LightBlock.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\Block\SpecificBlocks\Light\PurpleLight.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\Block\SpecificBlocks\Light\RedLight.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\LightData.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Graphic\Shader\shader.fs" />
@@ -169,6 +196,8 @@
     <None Include="src\Graphic\Shader\shaderHotbarBlock.fs" />
     <None Include="src\Graphic\Shader\shaderHotbarBlock.vs" />
     <None Include="src\Graphic\Shader\shaderHotbarSelection.fs" />
+    <None Include="src\Graphic\Shader\shaderSkybox.vs" />
+    <None Include="src\Graphic\Shader\shaderSkybox.fs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Block\birch_log.png">

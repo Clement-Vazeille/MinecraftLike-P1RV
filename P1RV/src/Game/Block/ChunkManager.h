@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include "../Maths/Vector2I.h"
+#include "../LightData.h"
 
 //Class stockant l'ensemble des chunks du jeu
 class ChunkManager
@@ -12,6 +13,8 @@ private:
 	unordered_map<Vector2I, Chunk*, Vector2I::HashFoncteur> chunks;
 
 	unordered_set<Chunk*> activeChunks;
+
+	unordered_set<LightData*> lights;
 
 	int DistanceChunks(const Vector2I& coordonnesChunk1, const Vector2I& coordonnesChunk2);
 	int renderDistance = 2;
@@ -46,4 +49,6 @@ public:
 	//Prend en entree une coordonnee et renvoie si il y a un bloc ou non a cet emplacement
 	//Si les pointeurs sont non nuls les valeurs ou ils pointent sont remplacee par les valeurs du bloc correspondant si il existe
 	bool findBlock(const glm::vec3& coordonnees, Vector2I* sortieCoordChunk, Vector3I* sortieCoordBloc, Block** block);
+
+	const unordered_set<LightData*>* getLights() const;
 };

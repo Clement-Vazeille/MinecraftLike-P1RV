@@ -20,8 +20,8 @@ void HotBar::initialise(void)
 	blocks.at(1) = new GrassBlockSnow;
 	blocks.at(2) = new CraftingTable;
 	blocks.at(3) = new BirchWood;
-	blocks.at(4) = new OakWood;
-	blocks.at(5) = new OakPlank;
+	blocks.at(4) = new PurpleLight;
+	blocks.at(5) = new RedLight;
 	blocks.at(6) = new Leaves;
 	blocks.at(7) = new Dirt;
 	blocks.at(8) = new Stone;

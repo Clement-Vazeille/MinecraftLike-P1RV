@@ -35,4 +35,9 @@ bool Block::hasCollisions(void) const
 	return true;
 }
 
+bool Block::isLight(void) const
+{
+	return false;
+}
+
 

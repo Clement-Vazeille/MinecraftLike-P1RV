@@ -11,6 +11,8 @@
 #include "SpecificBlocks/OakPlank.h"
 #include "SpecificBlocks/OakWood.h"
 #include "SpecificBlocks/Water.h"
+#include "SpecificBlocks/Light/PurpleLight.h"
+#include "SpecificBlocks/Light/RedLight.h"
 
 int ChunkManager::DistanceChunks(const Vector2I& coordonnesChunk1, const Vector2I& coordonnesChunk2)
 {
@@ -72,9 +74,9 @@ void ChunkManager::AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlo
 		if (IDblock == 3)
 			blockCree = new BirchWood(coordBlockCopie);
 		if (IDblock == 4)
-			blockCree = new OakWood(coordBlockCopie);
+			blockCree = new PurpleLight(coordBlockCopie);
 		if (IDblock == 5)
-			blockCree = new OakPlank(coordBlockCopie);
+			blockCree = new RedLight(coordBlockCopie);
 		if (IDblock == 6)
 			blockCree = new Leaves(coordBlockCopie);
 		if (IDblock == 7)
@@ -86,7 +88,23 @@ void ChunkManager::AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlo
 
 		chunks.at(coordChunkCopie)->AddBlock(blockCree);
 		if (!this->isPositionAllowed(coordonneesJoueur))
+		{
 			this->DestroyBlock(coordChunkCopie, coordBlockCopie);
+			return;
+		}
+
+		if (blockCree != nullptr)
+		{
+			if (blockCree->isLight())
+			{
+				LightData* lightData = new LightData;
+				lightData->chunkPosition = coordChunkCopie;
+				lightData->sourcePosition = coordBlockCopie;
+				lightData->lightColor = static_cast<LightBlock*>(blockCree)->getColor();
+
+				lights.insert(lightData);
+			}
+		}
 	}
 }
 
@@ -222,4 +240,9 @@ bool ChunkManager::findBlock(const glm::vec3& coordonnees, Vector2I* sortieCoord
 	}
 
 	return false;
+}
+
+const unordered_set<LightData*>* ChunkManager::getLights() const
+{
+	return &lights;
 }

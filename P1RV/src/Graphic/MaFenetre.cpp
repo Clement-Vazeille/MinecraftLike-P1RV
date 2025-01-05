@@ -1,4 +1,4 @@
-#include "MaFenetre.h"
+﻿#include "MaFenetre.h"
 
 void MaFenetre::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -110,16 +110,9 @@ void MaFenetre::scroll_callback(double xoffset, double yoffset)
     float scrollSensitivity = 1.0f;
     hotbarActiveSlot += (float)yoffset * scrollSensitivity;
     if (hotbarActiveSlot < 0.0f)
-        hotbarActiveSlot = 0.0f;
+        hotbarActiveSlot = 9.5f;
     if (hotbarActiveSlot > 9.9f)
-        hotbarActiveSlot = 9.9f;
-    /*
-    fov -= (float)yoffset;
-    if (fov < 1.0f)
-        fov = 1.0f;
-    if (fov > 45.0f)
-        fov = 45.0f;
-        */
+        hotbarActiveSlot = 0.5f;
 }
 
 void MaFenetre::key_callback(int key, int scancode, int action, int mods)
@@ -129,6 +122,10 @@ void MaFenetre::key_callback(int key, int scancode, int action, int mods)
         movementModeVol = !movementModeVol;
         yUpForce = 0.f;
     }
+
+    //traitement passage à la nuit
+    if (key == GLFW_KEY_N && action == GLFW_PRESS)
+        isItNight = !isItNight;
 
     //traitement sortie de l'application
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -344,4 +341,14 @@ int MaFenetre::getHotbarActiveSlot(void) const
 HotBar* MaFenetre::getHotBar(void) const
 {
     return hotbar;
+}
+
+bool MaFenetre::getIsItNight(void) const
+{
+    return isItNight;
+}
+
+const unordered_set<LightData*>* MaFenetre::getLights() const
+{
+    return chunkManager->getLights();
 }

@@ -2,7 +2,7 @@
 #include <unordered_map>
 #include "../../IncludeLibrairies.h"
 
-//Classe représentant des Vecteurs d'entiers à 2 dimensions
+//Classe reprenentant des Vecteurs d'entiers a 2 dimensions
 class Vector2I
 {
 private:
@@ -12,7 +12,7 @@ public:
 	Vector2I();
 	Vector2I(int x, int z);
 	
-	//conversion d'une coordonne 3d dans l'appli en une coordonnée de chunk
+	//conversion d'une coordonne 3d dans l'appli en une coordonnee de chunk
 	Vector2I(const glm::vec3& coordonneesJoueur);
 
 	void setX(int x);
@@ -27,7 +27,7 @@ public:
 	Vector2I operator* (const int& param) const;
 	bool operator== (const Vector2I& param) const;
 
-	//Foncteur de hachage qu'on créer pour pouvoir faire des hashmaps de Vector2I
+	//Foncteur de hachage qu'on creer pour pouvoir faire des hashmaps de Vector2I
 	struct HashFoncteur
 	{
 		size_t operator()(const Vector2I& param) const

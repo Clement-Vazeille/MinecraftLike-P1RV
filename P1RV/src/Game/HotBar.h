@@ -10,6 +10,8 @@
 #include "Block/SpecificBlocks/OakPlank.h"
 #include "Block/SpecificBlocks/OakWood.h"
 #include "Block/SpecificBlocks/Water.h"
+#include "Block/SpecificBlocks/Light/PurpleLight.h"
+#include "Block/SpecificBlocks/Light/RedLight.h"
 
 #include <array>
 class HotBar
