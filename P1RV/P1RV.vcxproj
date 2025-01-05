@@ -155,6 +155,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\Block\SpecificBlocks\Light\RedLight.cpp" />
+    <ClCompile Include="src\Game\Block\SpecificBlocks\Light\PurpleLight.cpp" />
+    <ClCompile Include="src\Game\Block\SpecificBlocks\Light\LightBlock.cpp" />
     <ClCompile Include="src\Graphic\LightManager.cpp" />
     <ClCompile Include="src\Game\Block\SpecificBlocks\Dirt.cpp" />
     <ClCompile Include="src\Game\Block\SpecificBlocks\Leaves.cpp" />
@@ -181,6 +184,9 @@
     <ClCompile Include="src\Game\Block\SpecificBlocks\Water.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game\Block\SpecificBlocks\Light\RedLight.h" />
+    <ClInclude Include="src\Game\Block\SpecificBlocks\Light\PurpleLight.h" />
+    <ClInclude Include="src\Game\Block\SpecificBlocks\Light\LightBlock.h" />
     <ClInclude Include="src\Graphic\LightManager.h" />
     <ClInclude Include="src\Game\Block\SpecificBlocks\Dirt.h" />
     <ClInclude Include="src\Game\Block\SpecificBlocks\Leaves.h" />

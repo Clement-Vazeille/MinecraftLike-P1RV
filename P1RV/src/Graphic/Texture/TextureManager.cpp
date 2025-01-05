@@ -135,8 +135,10 @@ void TextureManager::Load(Shader shader)
     LoadTexture("Assets/Block/oak_Plank.png", shader);
     LoadTexture("Assets/Block/grass_block_snow_side.png", shader);
     LoadTexture("Assets/Block/grass_block_snow_top.png", shader);
+    LoadTexture("Assets/Block/purple_light.png", shader);
+    LoadTexture("Assets/Block/red_light.png", shader);
     LoadTexture("Assets/HUD/hotbar.png", shader);
-
+    
     this->LoadCubemaps();
 }
 
