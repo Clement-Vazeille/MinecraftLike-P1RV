@@ -26,7 +26,7 @@ struct PointLight {
 	float linear;
 	float quadratic;
 };
-#define MAX_NBR_POINT_LIGHTS 10
+#define MAX_NBR_POINT_LIGHTS 100
 uniform PointLight pointLights[MAX_NBR_POINT_LIGHTS];
 uniform int nbrPointLights;
 

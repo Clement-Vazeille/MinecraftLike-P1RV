@@ -88,16 +88,19 @@ void ChunkManager::AddBlock(const Vector2I& coordChunk, const Vector3I& coordBlo
 
 		chunks.at(coordChunkCopie)->AddBlock(blockCree);
 		if (!this->isPositionAllowed(coordonneesJoueur))
+		{
 			this->DestroyBlock(coordChunkCopie, coordBlockCopie);
+			return;
+		}
 
 		if (blockCree != nullptr)
 		{
 			if (blockCree->isLight())
 			{
 				LightData* lightData = new LightData;
-				lightData->chunkPosition = coordChunk;
-				lightData->sourcePosition = coordBlock;
-				lightData->lightColor = glm::vec3(0.5f, 0.5f, 0.5f);
+				lightData->chunkPosition = coordChunkCopie;
+				lightData->sourcePosition = coordBlockCopie;
+				lightData->lightColor = static_cast<LightBlock*>(blockCree)->getColor();
 
 				lights.insert(lightData);
 			}

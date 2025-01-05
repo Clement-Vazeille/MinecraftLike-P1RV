@@ -8,3 +8,8 @@ bool LightBlock::isLight(void) const
 {
     return true;
 }
+
+const glm::vec3 LightBlock::getColor(void) const
+{
+    return color;
+}

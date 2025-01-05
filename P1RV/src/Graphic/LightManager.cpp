@@ -5,11 +5,12 @@ void LightManager::AddPointLight(glm::vec3& position,int id,const glm::vec3& col
     
 
     glm::vec3 diffuseColor = color * glm::vec3(0.8f);
-    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+    glm::vec3 ambientColor = color * glm::vec3(0.13f);
+    glm::vec3 specularColor = color * glm::vec3(0.4);
 
     shader.setVec3("pointLights[" + std::to_string(id) + "].ambient", ambientColor);
     shader.setVec3("pointLights[" + std::to_string(id) + "].diffuse", diffuseColor);
-    shader.setVec3("pointLights[" + std::to_string(id) + "].specular", 0.4f, 0.4f, 0.4f);
+    shader.setVec3("pointLights[" + std::to_string(id) + "].specular", specularColor);
 
     //valeurs changeant l'attenuation de la lumière
     //augmenter les termes lineaires et quadratiques pour réduire la puissance
@@ -45,7 +46,7 @@ void LightManager::Update(Shader& shader,float time, MaFenetre* fenetre)
     }
 
     //paramétrage lumières ponctuelles
-    int maxLightsNumber = 10;
+    int maxLightsNumber = 100;
     const unordered_set<LightData*>* lights = fenetre->getLights();
     int lightsNumber = min(maxLightsNumber, static_cast<int>(lights->size()));
     shader.setInt("nbrPointLights",lightsNumber);

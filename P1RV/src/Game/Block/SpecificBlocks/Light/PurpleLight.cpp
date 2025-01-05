@@ -4,8 +4,9 @@ PurpleLight::PurpleLight() : PurpleLight(0,0,0)
 {
 }
 
-PurpleLight::PurpleLight(int i, int j, int k) : LightBlock(i,j,k)
+PurpleLight::PurpleLight(int i, int j, int k) : LightBlock(i, j, k)
 {
+	color = glm::vec3(138.f / 255.f, 43.f / 255.f, 226.f / 255.f);
 	textures.at(0) = "Assets/Block/purple_light.png";  //arriere
 	textures.at(1) = "Assets/Block/purple_light.png";  //devant
 	textures.at(2) = "Assets/Block/purple_light.png";  //gauche
