@@ -47,12 +47,12 @@ void TextureManager::LoadCubemaps()
     };*/
     vector<std::string> facesday
     {
-        "Assets/skybox/day/front.png",
-        "Assets/skybox/day/front.png",
-        "Assets/skybox/day/front.png",
-        "Assets/skybox/day/front.png",
+        "Assets/skybox/day/right.png",
+        "Assets/skybox/day/left.png",
+        "Assets/skybox/day/top.png",
+        "Assets/skybox/day/bottom.png",
         "Assets/skybox/day/front.png", //le soleil doit être sur front en haut à droite
-        "Assets/skybox/day/front.png"
+        "Assets/skybox/day/back.png"
     };
     glGenTextures(1, &skyDayCubemapID);
     glBindTexture(GL_TEXTURE_CUBE_MAP, skyDayCubemapID);
@@ -82,12 +82,12 @@ void TextureManager::LoadCubemaps()
     
     vector<std::string> facesnight
     {
-        "Assets/skybox/night/front.png",
-        "Assets/skybox/night/front.png",
-        "Assets/skybox/night/front.png",
-        "Assets/skybox/night/front.png",
-        "Assets/skybox/night/front.png", //le soleil doit être sur front en haut à droite
-        "Assets/skybox/night/front.png"
+        "Assets/skybox/night/right.png",
+        "Assets/skybox/night/left.png",
+        "Assets/skybox/night/top.png",
+        "Assets/skybox/night/bottom.png",
+        "Assets/skybox/night/front.png", 
+        "Assets/skybox/night/back.png"
     };
     glGenTextures(1, &skyNightCubemapID);
     glBindTexture(GL_TEXTURE_CUBE_MAP, skyNightCubemapID);

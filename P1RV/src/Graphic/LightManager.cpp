@@ -37,10 +37,10 @@ void LightManager::Update(Shader& shader,float time, MaFenetre* fenetre)
     }
     else
     {
-        shader.setVec3("dirlight.direction", -0.2f, -1.0f, -0.3f);
+        shader.setVec3("dirlight.direction", -0.5f, -1.0f, -0.7f);
 
         shader.setVec3("dirlight.ambient", 0.2f, 0.2f, 0.2f);
-        shader.setVec3("dirlight.diffuse", 0.8f, 0.8f, 0.8f);
+        shader.setVec3("dirlight.diffuse", 0.95f, 0.95f, 0.95f);
         shader.setVec3("dirlight.specular", 0.5f, 0.5f, 0.5f);
     }
 
