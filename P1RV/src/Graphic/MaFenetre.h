@@ -106,5 +106,6 @@ public:
     int getHotbarActiveSlot(void) const;
     HotBar* getHotBar(void) const;
     bool getIsItNight(void) const;
+    const unordered_set<LightData*>* getLights() const;
 };
 

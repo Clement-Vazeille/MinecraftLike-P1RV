@@ -179,6 +179,9 @@
     <ClInclude Include="src\Game\Block\SpecificBlocks\Light\RedLight.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="src\Game\LightData.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Graphic\Shader\shader.fs" />

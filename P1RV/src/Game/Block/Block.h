@@ -21,5 +21,6 @@ public:
     Vector3I getPosition(void);
     string getTexturei(int i);
     virtual bool hasCollisions(void) const;
+    virtual bool isLight(void) const;
 };
 

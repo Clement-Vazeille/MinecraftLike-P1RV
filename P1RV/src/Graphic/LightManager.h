@@ -5,7 +5,7 @@
 class LightManager
 {
 private: 
-	void AddPointLight(glm::vec3& position,int id, glm::vec3& color, Shader& shader);
+	void AddPointLight(glm::vec3& position,int id,const glm::vec3& color, Shader& shader);
 public:
 	LightManager();
 	void Update(Shader& shader,float time, MaFenetre* fenetre);

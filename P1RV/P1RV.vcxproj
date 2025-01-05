@@ -187,6 +187,7 @@
     <ClInclude Include="src\Game\Block\SpecificBlocks\Light\RedLight.h" />
     <ClInclude Include="src\Game\Block\SpecificBlocks\Light\PurpleLight.h" />
     <ClInclude Include="src\Game\Block\SpecificBlocks\Light\LightBlock.h" />
+    <ClInclude Include="src\Game\LightData.h" />
     <ClInclude Include="src\Graphic\LightManager.h" />
     <ClInclude Include="src\Game\Block\SpecificBlocks\Dirt.h" />
     <ClInclude Include="src\Game\Block\SpecificBlocks\Leaves.h" />

@@ -5,5 +5,7 @@ class LightBlock :
 {
 public:
     LightBlock(int i, int j, int k);
+
+    bool isLight(void) const override;
 };
 

@@ -1,6 +1,6 @@
 ﻿#include "LightManager.h"
 
-void LightManager::AddPointLight(glm::vec3& position,int id, glm::vec3& color ,Shader& shader)
+void LightManager::AddPointLight(glm::vec3& position,int id,const glm::vec3& color ,Shader& shader)
 {
     
 
@@ -45,17 +45,21 @@ void LightManager::Update(Shader& shader,float time, MaFenetre* fenetre)
     }
 
     //paramétrage lumières ponctuelles
-    int nb = 2;
-    shader.setInt("nbrPointLights",nb);
-
-    glm::vec3 pointLightsColor;
-    pointLightsColor.x = sin(time * 2.0f);
-    pointLightsColor.y = sin(time * 0.7f);
-    pointLightsColor.z = sin(time * 1.3f);
-
-    for (int i = 0; i < nb; i++)
+    int maxLightsNumber = 10;
+    const unordered_set<LightData*>* lights = fenetre->getLights();
+    int lightsNumber = min(maxLightsNumber, static_cast<int>(lights->size()));
+    shader.setInt("nbrPointLights",lightsNumber);
+    int i = 0;
+    for (const auto& light : *lights)
     {
-        glm::vec3 position(8.0f + 16.f * i, 8.0f, 8.0f+16.f*i);
-        this->AddPointLight(position, i, pointLightsColor, shader);
+        if (i < maxLightsNumber)
+        {
+            glm::vec3 position(light->sourcePosition.getX() + 16.f * light->chunkPosition.getX() + 0.5f,
+                light->sourcePosition.getY() + 0.5f,
+                light->sourcePosition.getZ() + 16.f * light->chunkPosition.getZ()+ 0.5f);
+            this->AddPointLight(position, i++, light->lightColor, shader);
+        }
+        Vector2I chunkPosition;
+        Vector3I sourcePosition; 
     }
 }

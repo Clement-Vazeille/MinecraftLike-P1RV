@@ -354,3 +354,8 @@ bool MaFenetre::getIsItNight(void) const
 {
     return isItNight;
 }
+
+const unordered_set<LightData*>* MaFenetre::getLights() const
+{
+    return chunkManager->getLights();
+}
