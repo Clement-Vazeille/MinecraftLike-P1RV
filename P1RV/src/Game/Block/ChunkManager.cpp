@@ -112,6 +112,18 @@ void ChunkManager::DestroyBlock(const Vector2I& coordChunk, const Vector3I& coor
 {
 	if (chunks.count(coordChunk)) //test d' existence du chunk
 	{
+		if (chunks[coordChunk]->GetBlocks()->at(coordBlock))
+		{
+			for (auto light : lights)
+			{
+				if(light->chunkPosition==coordChunk && light->sourcePosition == coordBlock)
+				{
+					lights.erase(light);
+					break;
+				}
+			}
+			
+		}
 		chunks.at(coordChunk)->DestroyBlock(coordBlock);
 	}
 }
